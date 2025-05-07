@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         // Prova de connexió TMDb
         // Crida segura en segon pla
+        /*
         lifecycleScope.launch {
             withContext(Dispatchers.IO) {
                 try {
@@ -60,5 +61,6 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        */
     }
 }
