@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Movie Log</string>
+    <string name="movie_list">Llista de pel·lícules</string>
+    <string name="movie_title">Títol de la pel·lícula</string>
+    <string name="movie_description">Descripció de la pel·lícula</string>
+    <string name="movie_poster">Pòster de la pel·lícula</string>
 </resources>

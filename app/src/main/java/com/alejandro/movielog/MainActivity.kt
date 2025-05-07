@@ -1,66 +1,40 @@
 package com.alejandro.movielog
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.lifecycleScope
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.alejandro.movielog.data.Movie
+import com.alejandro.movielog.ui.MovieAdapter
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MovieAdapter
+    private val movieList = mutableListOf<Movie>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
-        // Prova de connexió anònima Firebase
-        /*
-        FirebaseAuth.getInstance().signInAnonymously()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = FirebaseAuth.getInstance().currentUser
-                    Log.d("FIREBASE", "Usuari connectat: ${user?.uid}")
-                } else {
-                    Log.e("FIREBASE", "Error al connectar: ${task.exception}")
-                }
+        // Inicialitzar RecyclerView
+        recyclerView = findViewById(R.id.rvMovies)
+        recyclerView.layoutManager = LinearLayoutManager(this)
 
-         */
+        // Crear l'adaptador
+        adapter = MovieAdapter(movieList)
+        recyclerView.adapter = adapter
 
-        // Prova de connexió TMDb
-        // Crida segura en segon pla
-        /*
-        lifecycleScope.launch {
-            withContext(Dispatchers.IO) {
-                try {
-                    val client = OkHttpClient()
-                    val request = Request.Builder()
-                        .url("https://api.themoviedb.org/3/movie/popular?language=en-US&page=1")
-                        .get()
-                        .addHeader("accept", "application/json")
-                        .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0YTVjYmZmMTQzZWRhOTBlNTk2NjIyODc4YWFhNjM1NCIsIm5iZiI6MTc0MzE1MjkzNy44MDQsInN1YiI6IjY3ZTY2NzI5NWYzZTBhYzE4ODAwNTBkNCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.BD-VZDhYzpiOnyOhnS6rKJJfkVlF9VieQVQ54f3dpZo")
-                        .build()
+        // Exemple de dades (potser les obtens de l'API)
+        val movie1 = Movie(1, "Pelicula A", "Descripció A", "https://www.tallengestore.com/cdn/shop/products/Art_Poster_-_Sicario_-_Tallenge_Hollywood_Collection_large.jpg")
+        val movie2 = Movie(2, "Pelicula B", "Descripció B", "https://assets.mubicdn.net/images/notebook/post_images/38230/images-w1400.jpeg")
 
-                    val response = client.newCall(request).execute()
-                    val body = response.body()?.string()
+        // Afegir les pel·lícules a la llista
+        movieList.add(movie1)
+        // Notificar al RecyclerView que les dades han canviat
+        adapter.notifyItemInserted(0)
+        movieList.add(movie2)
+        adapter.notifyItemInserted(1)
 
-                    Log.d("TMDb", "Resposta: $body")
-                } catch (e: Exception) {
-                    Log.e("TMDb", "Error: ${e.message}")
-                }
-            }
-        }
-        */
     }
 }
