@@ -23,7 +23,7 @@ class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Ada
         val movie = movieList[position]
 
         holder.title.text = movie.title
-        holder.description.text = movie.description
+        holder.description.text = movie.overview
         // Carregar imatge
         Glide.with(holder.poster.context)
             .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
