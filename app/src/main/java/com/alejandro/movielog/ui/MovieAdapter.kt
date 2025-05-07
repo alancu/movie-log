@@ -25,7 +25,9 @@ class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Ada
         holder.title.text = movie.title
         holder.description.text = movie.description
         // Carregar imatge
-        Glide.with(holder.poster.context).load(movie.posterPath).into(holder.poster)
+        Glide.with(holder.poster.context)
+            .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+            .into(holder.poster)
     }
 
     // Retorna el número de pel·lícules retornades
