@@ -1,6 +1,5 @@
 package com.alejandro.movielog.data
 
-
 data class Movie (
     val id: Int,
     val title: String,
