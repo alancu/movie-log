@@ -50,5 +50,6 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.retrofit)
     implementation(libs.okhttp)
+    implementation(libs.converter.gson)
 
 }
