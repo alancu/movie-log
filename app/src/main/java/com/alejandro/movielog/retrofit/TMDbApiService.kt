@@ -10,4 +10,10 @@ interface TMDbApiService {
     @GET("movie/popular")
     // 'suspend' indica que és una funció que es pot executar de manera asíncrona
     suspend fun getPopularMovies(@Query("api_key") apiKey: String): MovieResponse
+
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String
+    ): MovieResponse
 }
