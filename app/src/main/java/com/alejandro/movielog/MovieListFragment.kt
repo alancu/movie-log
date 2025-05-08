@@ -43,4 +43,19 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         adapter = MovieAdapter(movieList)
         recyclerView.adapter = adapter
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun searchMovies(query: String) {
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.apiService.searchMovies("4a5cbff143eda90e596622878aaa6354", query)
+                movieList.clear()
+                movieList.addAll(response.results)
+                adapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), getString(R.string.error_loading_movies), Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 }
