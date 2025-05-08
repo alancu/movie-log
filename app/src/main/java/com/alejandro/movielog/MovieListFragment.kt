@@ -23,7 +23,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         super.onViewCreated(view, savedInstanceState)
 
         // inicialitzar RecyclerView
-        recyclerView = view.findViewById(R.id.rvMovies)
+        recyclerView = view.findViewById(R.id.rv_movies)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // càrrega inicial de pel·lícules populars
