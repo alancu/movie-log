@@ -1,59 +1,46 @@
 package com.alejandro.movielog
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.alejandro.movielog.data.Movie
+import com.alejandro.movielog.retrofit.RetrofitClient
+import com.alejandro.movielog.ui.MovieAdapter
+import kotlinx.coroutines.launch
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieListFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MovieListFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: MovieAdapter
+    private val movieList = mutableListOf<Movie>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    @SuppressLint("NotifyDataSetChanged")
+    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_list, container, false)
-    }
+        // inicialitzar RecyclerView
+        recyclerView = view.findViewById(R.id.rvMovies)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MovieListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MovieListFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+        // càrrega inicial de pel·lícules populars
+        lifecycleScope.launch {
+            try {
+                val response = RetrofitClient.apiService.getPopularMovies("4a5cbff143eda90e596622878aaa6354")
+                movieList.clear()
+                movieList.addAll(response.results)
+                adapter.notifyDataSetChanged()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(requireContext(), getString(R.string.error_loading_movies), Toast.LENGTH_SHORT).show()
             }
+        }
+
+        // Crear l'adaptador
+        adapter = MovieAdapter(movieList)
+        recyclerView.adapter = adapter
     }
 }

@@ -6,4 +6,5 @@
     <string name="movie_poster">Pòster de la pel·lícula</string>
     <string name="popular_movies">Pel·lícules populars</string>
     <string name="query_hint">Busca pel·lícula…</string>
+    <string name="error_loading_movies">Error carregant les pel·lícules</string>
 </resources>
