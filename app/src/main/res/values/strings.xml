@@ -4,4 +4,5 @@
     <string name="movie_title">Títol de la pel·lícula</string>
     <string name="movie_description">Descripció de la pel·lícula</string>
     <string name="movie_poster">Pòster de la pel·lícula</string>
+    <string name="popular_movies">Pel·lícules populars</string>
 </resources>
