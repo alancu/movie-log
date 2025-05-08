@@ -2,13 +2,13 @@ package com.alejandro.movielog.data
 
 import com.google.gson.annotations.SerializedName
 
-// 'data class' és una classe de Kotlin que per guardar dades
-// crea automàticament funcions útils
+// classe que representa una pel·lícula rebuda de l'API
+// "data class" s'utilitza per a representar dades i crea algunes funcions per defecte
 data class Movie (
     val id: Int,
     val title: String,
     val overview: String,
-    // @SerializedName per què en el JSON, este camp es diu 'poster_path', però ací posterPath
+    // @SerializedName perquè en el JSON aquest camp es diu 'poster_path', però ací l'anomenem posterPath
     @SerializedName("poster_path")
-    val posterPath: String?
+    val posterPath: String
 )
