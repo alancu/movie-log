@@ -3,12 +3,14 @@ package com.alejandro.movielog.retrofit
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+// object = singleton
 object RetrofitClient {
-    val apiService: TMDbApiService by lazy { //by lazy inicialitza la variable només quan siga necessària
-        Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(GsonConverterFactory.create()) //convertim les respostes de l'API en JSON a objectes Kotlin
-            .build()
-            .create(TMDbApiService::class.java)
-    }
+    // Configura Retrofit
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.themoviedb.org/3/") // URL base de l'API
+        .addConverterFactory(GsonConverterFactory.create()) // Tradueix JSON a Kotlin
+        .build()
+
+    // Crea la implementació de l'API definida a TMDbApiService
+    val apiService: TMDbApiService = retrofit.create(TMDbApiService::class.java)
 }
