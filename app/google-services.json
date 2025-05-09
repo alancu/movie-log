@@ -12,7 +12,20 @@
           "package_name": "com.alejandro.movielog"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "630102849165-gcf1mntm4cfa7umrnvv5eg21jalf501t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.alejandro.movielog",
+            "certificate_hash": "0a8b908cff1cf32f56bd6bb87663db1c1fb37e9d"
+          }
+        },
+        {
+          "client_id": "630102849165-7eulf9nak3gpt0ht7opfn45hgbrb23l8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCdGjFr6UTDR8igFyAUmrnNqG2ukM_xxzk"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "630102849165-7eulf9nak3gpt0ht7opfn45hgbrb23l8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

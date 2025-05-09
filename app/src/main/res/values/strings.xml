@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Movie Log</string>
     <string name="movie_list">Llista de pel·lícules</string>
     <string name="movie_title">Títol de la pel·lícula</string>
@@ -9,4 +9,5 @@
     <string name="search_result">Resultat de la búsqueda</string>
     <string name="search_movies">Busca pel·lícules…</string>
     <string name="error_loading_movies">Error carregant les pel·lícules</string>
+    <string name="web_client_id" tools:ignore="TypographyDashes">630102849165-7eulf9nak3gpt0ht7opfn45hgbrb23l8.apps.googleusercontent.com</string>
 </resources>
