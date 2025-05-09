@@ -46,7 +46,6 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
     @SuppressLint("NotifyDataSetChanged")
     fun searchMovies(query: String) {
-        // crida asíncrona per a no bloquejar la interfície mentre es fa la búsqueda
         lifecycleScope.launch {
             try {
                 val response = RetrofitClient.apiService.searchMovies("4a5cbff143eda90e596622878aaa6354", query)
