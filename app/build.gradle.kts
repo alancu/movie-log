@@ -53,5 +53,6 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.converter.gson)
     implementation(libs.glide)
+    implementation(libs.play.services.auth)
 
 }
