@@ -10,4 +10,6 @@
     <string name="search_movies">Busca pel·lícules…</string>
     <string name="error_loading_movies">Error carregant les pel·lícules</string>
     <string name="web_client_id" tools:ignore="TypographyDashes">630102849165-7eulf9nak3gpt0ht7opfn45hgbrb23l8.apps.googleusercontent.com</string>
+    <string name="watch_trailer">Veure tràiler</string>
+    <string name="tmdb_api_key">4a5cbff143eda90e596622878aaa6354</string>
 </resources>

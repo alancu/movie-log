@@ -29,7 +29,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         // càrrega inicial de pel·lícules populars
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.apiService.getPopularMovies("4a5cbff143eda90e596622878aaa6354")
+                val response = RetrofitClient.apiService.getPopularMovies(getString(R.string.tmdb_api_key))
                 movieList.clear()
                 movieList.addAll(response.results)
                 adapter.notifyDataSetChanged()
@@ -48,7 +48,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
     fun searchMovies(query: String) {
         lifecycleScope.launch {
             try {
-                val response = RetrofitClient.apiService.searchMovies("4a5cbff143eda90e596622878aaa6354", query)
+                val response = RetrofitClient.apiService.searchMovies(getString(R.string.tmdb_api_key), query)
                 movieList.clear()
                 movieList.addAll(response.results)
                 adapter.notifyDataSetChanged()
