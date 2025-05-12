@@ -12,5 +12,5 @@
         android:id="@+id/action_user"
         android:icon="@drawable/ic_user"
         android:title="@string/user"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="always" />
 </menu>

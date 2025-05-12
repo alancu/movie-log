@@ -1,9 +1,12 @@
 package com.alejandro.movielog
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -48,5 +51,23 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_user -> {
+                // quan s'apreta la icona d'usuari, tancar la sessió
+                signOut()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
+    private fun signOut() {
+        // tanquem la sessió de Firebase
+        FirebaseAuth.getInstance().signOut()
+        // redirigir a l'activitat de login
+        startActivity(Intent(this, LoginActivity::class.java))
+        // tanquem esta activitat
+        finish()
+    }
 }
