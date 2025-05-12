@@ -23,6 +23,16 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        // si l'usuari ja ha iniciat sessió, el redirigim a MainActivity
+        if (firebaseAuth.currentUser != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+            return
+        }
+
         setContentView(R.layout.activity_login)
 
         // configurem les opcions de Google Sign-In
@@ -32,7 +42,6 @@ class LoginActivity : AppCompatActivity() {
             .build()
 
         googleSignInClient = com.google.android.gms.auth.api.signin.GoogleSignIn.getClient(this, gso)
-        firebaseAuth = FirebaseAuth.getInstance()
 
         findViewById<SignInButton>(R.id.sign_in_button).setOnClickListener {
             signIn()
