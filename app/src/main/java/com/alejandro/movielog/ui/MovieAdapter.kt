@@ -33,7 +33,7 @@ class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Ada
 
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
-            val intent = Intent(context, MovieDetailActivity::class.java)
+            val intent = Intent(holder.itemView.context, MovieDetailActivity::class.java)
             intent.putExtra("movie", movie)  // Passar l'objecte Movie a l'activitat de detalls
             context.startActivity(intent)
         }
