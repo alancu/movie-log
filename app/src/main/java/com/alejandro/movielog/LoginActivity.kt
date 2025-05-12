@@ -63,9 +63,10 @@ class LoginActivity : AppCompatActivity() {
             try {
                 // intentem obtindre el compte de Google
                 val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account.idToken!!) // iniciem sessió amb Firebase
+                // iniciem sessió amb Firebase
+                firebaseAuthWithGoogle(account.idToken!!)
             } catch (e: ApiException) {
-                Log.w("LoginActivity", getString(R.string.google_signin_failed), e) // si falla, ho loguem
+                Log.w("LoginActivity", getString(R.string.google_signin_failed), e)
             }
         }
     }
@@ -79,6 +80,7 @@ class LoginActivity : AppCompatActivity() {
                     // inici de sessió correcte -> anem a la pantalla principal
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
+                    overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
                     finish()
                 } else {
                     // inici de sessió fallat -> mostrem l'error pel log

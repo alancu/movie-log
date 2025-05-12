@@ -67,6 +67,8 @@ class MainActivity : AppCompatActivity() {
         FirebaseAuth.getInstance().signOut()
         // redirigir a l'activitat de login
         startActivity(Intent(this, LoginActivity::class.java))
+        @Suppress("DEPRECATION")
+        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
         // tanquem esta activitat
         finish()
     }
