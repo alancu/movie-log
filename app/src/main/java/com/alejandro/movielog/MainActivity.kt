@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_user -> {
+            R.id.action_logout -> {
                 // quan s'apreta la icona d'usuari, tancar la sessió
                 signOut()
                 return true

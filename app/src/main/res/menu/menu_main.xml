@@ -9,8 +9,8 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
     <item
-        android:id="@+id/action_user"
-        android:icon="@drawable/ic_user"
-        android:title="@string/user"
+        android:id="@+id/action_logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/logout"
         app:showAsAction="always" />
 </menu>
