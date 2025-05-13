@@ -4,12 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import com.alejandro.movielog.ui.UserProfileDialog
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
+@Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,6 +53,30 @@ class MainActivity : AppCompatActivity() {
                 return false
             }
         })
+
+        //afegim la imatge de perfil
+        val userItem = menu.findItem(R.id.action_user)
+        val actionView = userItem?.actionView
+
+        val userImage = actionView?.findViewById<ImageView>(R.id.image_user_menu)
+
+        val account = com.google.android.gms.auth.api.signin.GoogleSignIn
+            .getLastSignedInAccount(this)
+        account?.let {
+            Glide.with(this)
+                .load(it.photoUrl)
+                .placeholder(R.drawable.ic_user)
+                .circleCrop()
+                .into(userImage!!)
+        }
+
+        userImage?.setOnClickListener {
+            val dialog = UserProfileDialog(account) {
+                signOut()
+            }
+            dialog.show(supportFragmentManager, "user_profile")
+        }
+
         return true
     }
 

@@ -15,18 +15,18 @@ import com.bumptech.glide.Glide
 @Suppress("DEPRECATION")
 // classe de diàleg que mostra el perfil de l'usuari i permet tancar sessió
 class UserProfileDialog(
-    private val account: com.google.android.gms.auth.api.signin.GoogleSignInAccount,
+    private val account: com.google.android.gms.auth.api.signin.GoogleSignInAccount?,
     private val onLogout: () -> Unit
 ) : DialogFragment() {
     @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_user_profile, null)
 
-        view.findViewById<TextView>(R.id.text_user_name).text = account.displayName
-        view.findViewById<TextView>(R.id.text_user_email).text = account.email
+        view.findViewById<TextView>(R.id.text_user_name).text = account?.displayName
+        view.findViewById<TextView>(R.id.text_user_email).text = account?.email
 
         Glide.with(requireContext())
-            .load(account.photoUrl)
+            .load(account?.photoUrl)
             .placeholder(R.drawable.ic_user)
             .circleCrop()
             .into(view.findViewById<ImageView>(R.id.image_user_photo))
