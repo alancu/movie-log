@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.viewmodel.MovieViewModel
-import com.alejandro.movielog.viewmodel.ViewModelProviderUtil
 
 /**
  * Fragment que mostra la llista de pel·lícules populars i gestiona la cerca.

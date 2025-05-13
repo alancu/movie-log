@@ -1,6 +1,5 @@
 package com.alejandro.movielog.ui.detail
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -8,13 +7,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.data.network.RetrofitClient
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadImage
+import com.alejandro.movielog.utils.navigateToUrl
 import kotlinx.coroutines.launch
 
 /**
@@ -56,17 +55,16 @@ class MovieDetailActivity : AppCompatActivity() {
                 // Buscar el tràiler en YouTube
                 val youtubeTrailer = response.results.firstOrNull { it.site == "YouTube" && it.type == "Trailer" }
 
-                youtubeTrailer?.let {
-                    val youtubeUrl = "${Constants.YOUTUBE_WATCH_URL}${it.key}"
-                    val intent = Intent(Intent.ACTION_VIEW, youtubeUrl.toUri())
+                youtubeTrailer?.let { video ->
+                    val youtubeUrl = "${Constants.YOUTUBE_WATCH_URL}${video.key}"
 
-                    // Mostrar el botó de veure tràiler
                     val trailerButton: Button = findViewById(R.id.button_watch_trailer)
                     trailerButton.visibility = View.VISIBLE
                     trailerButton.setOnClickListener {
-                        startActivity(intent)
+                        navigateToUrl(youtubeUrl)
                     }
                 }
+
 
             } catch (e: Exception) {
                 // Maneig d'errors

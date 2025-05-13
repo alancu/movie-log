@@ -15,6 +15,7 @@ import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.UserProfileDialog
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadCircularImage
+import com.alejandro.movielog.utils.navigateTo
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -50,15 +51,13 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
-                    val intent = Intent(this@MainActivity, SearchActivity::class.java)
-                    intent.putExtra(Constants.EXTRA_QUERY, query)
-                    startActivity(intent)
+                    navigateTo<SearchActivity>(Constants.EXTRA_QUERY to query)
                     searchView.clearFocus()
                 }
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean = false
+            override fun onQueryTextChange(newText: String?) = false
         })
 
         // Carrega la imatge de perfil

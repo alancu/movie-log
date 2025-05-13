@@ -2,7 +2,6 @@ package com.alejandro.movielog.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.repository.MovieRepository
@@ -11,38 +10,35 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel que gestiona la lògica de les pel·lícules i emet dades a la UI.
  */
-class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
+class MovieViewModel(private val repository: MovieRepository) : BaseViewModel() {
 
     private val _movies = MutableLiveData<List<Movie>>()
     val movies: LiveData<List<Movie>> = _movies
 
-    private val _errorMessage = MutableLiveData<String?>()
-    val errorMessage: LiveData<String?> = _errorMessage
-
-    /**
-     * Carrega la llista de pel·lícules populars.
-     */
     fun loadPopularMovies() {
         viewModelScope.launch {
+            _loading.postValue(true)
             try {
                 val response = repository.getPopularMovies()
                 _movies.postValue(response.results)
             } catch (e: Exception) {
-                _errorMessage.postValue("Error carregant pel·lícules populars: $e")
+                handleError(e, "Error carregant pel·lícules populars")
+            } finally {
+                _loading.postValue(false)
             }
         }
     }
 
-    /**
-     * Cerca pel·lícules a partir d'un text de consulta.
-     */
     fun searchMovies(query: String) {
         viewModelScope.launch {
+            _loading.postValue(true)
             try {
                 val response = repository.searchMovies(query)
                 _movies.postValue(response.results)
             } catch (e: Exception) {
-                _errorMessage.postValue("Error buscant pel·lícules: $e")
+                handleError(e, "Error buscant pel·lícules")
+            } finally {
+                _loading.postValue(false)
             }
         }
     }

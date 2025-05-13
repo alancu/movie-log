@@ -9,7 +9,6 @@ import com.alejandro.movielog.databinding.ActivitySearchBinding
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.viewmodel.MovieViewModel
-import com.alejandro.movielog.viewmodel.ViewModelProviderUtil
 
 class SearchActivity : AppCompatActivity() {
 
