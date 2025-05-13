@@ -27,7 +27,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
         recyclerView = view.findViewById(R.id.rv_movies)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        adapter = MovieAdapter(mutableListOf())
+        adapter = MovieAdapter()
         recyclerView.adapter = adapter
 
         viewModel = ViewModelProviderUtil.provideMovieViewModel(this, requireContext())

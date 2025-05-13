@@ -28,7 +28,7 @@ class SearchActivity : AppCompatActivity() {
         supportActionBar?.title = getString(R.string.search_movies)
 
         // Configura el RecyclerView
-        adapter = MovieAdapter(mutableListOf())
+        adapter = MovieAdapter()
         binding.rvSearchResults.layoutManager = LinearLayoutManager(this)
         binding.rvSearchResults.adapter = adapter
 
