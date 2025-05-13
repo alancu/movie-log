@@ -16,4 +16,7 @@
     <string name="google_signin_failed">Ha fallat l\'inici de sessió amb Google</string>
     <string name="user">Usuari</string>
     <string name="logout">Tancar sessió</string>
+    <string name="name">Nom</string>
+    <string name="email">Correu electrònic</string>
+    <string name="profile_picture">Imatge de perfil</string>
 </resources>

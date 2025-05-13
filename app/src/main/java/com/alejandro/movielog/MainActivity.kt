@@ -4,8 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import com.alejandro.movielog.ui.UserProfileDialog
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
@@ -52,14 +54,23 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.action_logout -> {
-                // quan s'apreta la icona d'usuari, tancar la sessió
-                signOut()
-                return true
+        return when (item.itemId) {
+            R.id.action_user -> {
+                val account =com.google.android.gms.auth.api.signin.GoogleSignIn
+                    .getLastSignedInAccount(this)
+                if (account != null) {
+                    val dialog = UserProfileDialog(account) {
+                        // Passem la funció signOut com a paràmetre al diàleg (s'executarà en fer logout)
+                        signOut()
+                    }
+                    dialog.show(supportFragmentManager, "UserProfileDialog")
+                } else {
+                    Toast.makeText(this, "No s'ha iniciat sessió", Toast.LENGTH_SHORT).show()
+                }
+                true
             }
+            else -> super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
     }
 
     private fun signOut() {
