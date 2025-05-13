@@ -42,19 +42,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
-
-        // Configura la barra de cerca
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.search_movies)
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    val fragment = supportFragmentManager.findFragmentById(R.id.fragment_movie_list)
-                    if (fragment is MovieListFragment) {
-                        fragment.searchMovies(query)
-                    }
+                if (!query.isNullOrBlank()) {
+                    val intent = Intent(this@MainActivity, SearchActivity::class.java)
+                    intent.putExtra("query", query)
+                    startActivity(intent)
                     searchView.clearFocus()
                 }
                 return true
