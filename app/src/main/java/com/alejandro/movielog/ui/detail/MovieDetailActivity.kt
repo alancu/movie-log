@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.data.network.RetrofitClient
+import com.alejandro.movielog.utils.Constants
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
@@ -27,7 +28,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         // Recupera l'objecte Movie passat a l'Intent
         @Suppress("DEPRECATION")
-        val movie: Movie? = intent.getParcelableExtra("movie")
+        val movie: Movie? = intent.getParcelableExtra(Constants.EXTRA_MOVIE)
 
         val titleTextView: TextView = findViewById(R.id.tv_movie_detail_title)
         val descriptionTextView: TextView = findViewById(R.id.tv_movie_detail_description)
@@ -38,7 +39,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         // Posem la imatge del pòster
         Glide.with(this)
-            .load("https://image.tmdb.org/t/p/w500${movie?.posterPath}")
+            .load("${Constants.POSTER_BASE_URL}${movie?.posterPath}")
             .into(posterImageView)
 
         // Carreguem el tràiler
@@ -58,7 +59,7 @@ class MovieDetailActivity : AppCompatActivity() {
                 val youtubeTrailer = response.results.firstOrNull { it.site == "YouTube" && it.type == "Trailer" }
 
                 youtubeTrailer?.let {
-                    val youtubeUrl = "https://www.youtube.com/watch?v=${it.key}"
+                    val youtubeUrl = "${Constants.YOUTUBE_WATCH_URL}${it.key}"
                     val intent = Intent(Intent.ACTION_VIEW, youtubeUrl.toUri())
 
                     // Mostrar el botó de veure tràiler

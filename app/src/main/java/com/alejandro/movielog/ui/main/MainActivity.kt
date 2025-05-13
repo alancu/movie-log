@@ -13,6 +13,7 @@ import com.alejandro.movielog.ui.login.LoginActivity
 import com.alejandro.movielog.ui.fragments.MovieListFragment
 import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.UserProfileDialog
+import com.alejandro.movielog.utils.Constants
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
                     val intent = Intent(this@MainActivity, SearchActivity::class.java)
-                    intent.putExtra("query", query)
+                    intent.putExtra(Constants.EXTRA_QUERY, query)
                     startActivity(intent)
                     searchView.clearFocus()
                 }

@@ -1,5 +1,6 @@
 package com.alejandro.movielog.data.network
 
+import com.alejandro.movielog.utils.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -8,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object RetrofitClient {
     private val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.themoviedb.org/3/")
+        .baseUrl(Constants.BASE_URL)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 

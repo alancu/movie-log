@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.ui.detail.MovieDetailActivity
+import com.alejandro.movielog.utils.Constants
 import com.bumptech.glide.Glide
 
 /**
@@ -29,13 +30,13 @@ class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Ada
         holder.description.text = movie.overview
 
         Glide.with(holder.poster.context)
-            .load("https://image.tmdb.org/t/p/w500${movie.posterPath}")
+            .load("${Constants.POSTER_BASE_URL}${movie.posterPath}")
             .into(holder.poster)
 
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
             val intent = Intent(context, MovieDetailActivity::class.java)
-            intent.putExtra("movie", movie)
+            intent.putExtra(Constants.EXTRA_MOVIE, movie)
             context.startActivity(intent)
         }
     }

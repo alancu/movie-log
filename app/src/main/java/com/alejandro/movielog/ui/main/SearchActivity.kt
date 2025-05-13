@@ -9,6 +9,7 @@ import com.alejandro.movielog.R
 import com.alejandro.movielog.databinding.ActivitySearchBinding
 import com.alejandro.movielog.repository.MovieRepository
 import com.alejandro.movielog.ui.components.MovieAdapter
+import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.viewmodel.MovieViewModel
 import com.alejandro.movielog.viewmodel.MovieViewModelFactory
 
@@ -51,7 +52,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // Obté la consulta des de l'Intent
-        val query = intent.getStringExtra("query")
+        val query = intent.getStringExtra(Constants.EXTRA_QUERY)
         if (!query.isNullOrEmpty()) {
             viewModel.searchMovies(query)
         }
