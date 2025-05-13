@@ -2,60 +2,55 @@ package com.alejandro.movielog
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.alejandro.movielog.data.Movie
-import com.alejandro.movielog.retrofit.RetrofitClient
+import com.alejandro.movielog.repository.MovieRepository
 import com.alejandro.movielog.ui.MovieAdapter
-import kotlinx.coroutines.launch
+import com.alejandro.movielog.viewmodel.MovieViewModel
+import com.alejandro.movielog.viewmodel.MovieViewModelFactory
 
+@SuppressLint("NotifyDataSetChanged")
 class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
-    private val movieList = mutableListOf<Movie>()
 
-    @SuppressLint("NotifyDataSetChanged")
-    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
+    private lateinit var viewModel: MovieViewModel
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // inicialitzar RecyclerView
         recyclerView = view.findViewById(R.id.rv_movies)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // càrrega inicial de pel·lícules populars
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.apiService.getPopularMovies(getString(R.string.tmdb_api_key))
-                movieList.clear()
-                movieList.addAll(response.results)
-                adapter.notifyDataSetChanged()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), getString(R.string.error_loading_movies), Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        // Crear l'adaptador
-        adapter = MovieAdapter(movieList)
+        adapter = MovieAdapter(mutableListOf())
         recyclerView.adapter = adapter
+
+        val apiKey = getString(R.string.tmdb_api_key)
+        val repository = MovieRepository(apiKey)
+        val factory = MovieViewModelFactory(repository)
+        viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
+
+        observeViewModel()
+        viewModel.loadPopularMovies()
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun searchMovies(query: String) {
-        lifecycleScope.launch {
-            try {
-                val response = RetrofitClient.apiService.searchMovies(getString(R.string.tmdb_api_key), query)
-                movieList.clear()
-                movieList.addAll(response.results)
-                adapter.notifyDataSetChanged()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), getString(R.string.error_loading_movies), Toast.LENGTH_SHORT).show()
+    private fun observeViewModel() {
+        viewModel.movies.observe(viewLifecycleOwner) { movies ->
+            adapter.updateMovies(movies)
+        }
+
+        viewModel.errorMessage.observe(viewLifecycleOwner) { message ->
+            message?.let {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    fun searchMovies(query: String) {
+        viewModel.searchMovies(query)
     }
 }

@@ -1,5 +1,6 @@
 package com.alejandro.movielog.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.MovieDetailActivity
 import com.alejandro.movielog.R
-import com.alejandro.movielog.data.Movie
+import com.alejandro.movielog.data.model.Movie
 import com.bumptech.glide.Glide
 
 class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
@@ -47,5 +48,12 @@ class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Ada
         var title: TextView = itemView.findViewById(R.id.tv_movie_title)
         val description: TextView = itemView.findViewById(R.id.tv_movie_description)
         val poster: ImageView = itemView.findViewById(R.id.iv_movie_poster)
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateMovies(newMovies: List<Movie>) {
+        movieList.clear()
+        movieList.addAll(newMovies)
+        notifyDataSetChanged()
     }
 }
