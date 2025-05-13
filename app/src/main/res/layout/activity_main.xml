@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.main.MainActivity">
 
-    <!-- Toolbar amb títol i SearchView -->
+    <!-- Barra superior amb el títol i el buscador -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <!-- Fragment amb el llistat de pel·lícules -->
+    <!-- Contenidor on es carregarà el fragment amb la llista de pel·lícules -->
     <FrameLayout
         android:id="@+id/fragment_movie_list"
         android:layout_width="0dp"

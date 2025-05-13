@@ -16,6 +16,9 @@ import com.alejandro.movielog.data.network.RetrofitClient
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
 
+/**
+ * Activitat que mostra els detalls d'una pel·lícula i permet veure el tràiler si està disponible.
+ */
 class MovieDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +45,9 @@ class MovieDetailActivity : AppCompatActivity() {
         movie?.id?.let { loadMovieTrailer(it) }
     }
 
-    // Funció per carregar el tràiler de la pel·lícula
+    /**
+     * Fa una crida a l'API per obtenir el tràiler de la pel·lícula i obrir-lo en YouTube.
+     */
     private fun loadMovieTrailer(movieId: Int) {
         lifecycleScope.launch {
             try {

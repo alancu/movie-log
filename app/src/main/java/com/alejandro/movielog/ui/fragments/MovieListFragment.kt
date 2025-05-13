@@ -14,12 +14,14 @@ import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.viewmodel.MovieViewModel
 import com.alejandro.movielog.viewmodel.MovieViewModelFactory
 
+/**
+ * Fragment que mostra la llista de pel·lícules populars i gestiona la cerca.
+ */
 @SuppressLint("NotifyDataSetChanged")
 class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
-
     private lateinit var viewModel: MovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,6 +41,9 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         viewModel.loadPopularMovies()
     }
 
+    /**
+     * Observa els LiveData del ViewModel i actualitza la UI.
+     */
     private fun observeViewModel() {
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             adapter.updateMovies(movies)
@@ -51,6 +56,9 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         }
     }
 
+    /**
+     * Crida la búsqueda de pel·lícules des del ViewModel.
+     */
     fun searchMovies(query: String) {
         viewModel.searchMovies(query)
     }

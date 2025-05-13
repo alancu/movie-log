@@ -9,7 +9,6 @@
     android:padding="32dp"
     tools:context=".ui.login.LoginActivity">
 
-    <!-- Logotip o nom de l'app -->
     <TextView
         android:id="@+id/app_title"
         android:layout_width="wrap_content"

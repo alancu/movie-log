@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Diàleg que mostra la informació de l'usuari iniciat amb Google (foto, nom, correu) i permet tancar sessió.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:padding="24dp"
     android:layout_width="match_parent" android:layout_height="wrap_content">
@@ -25,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="@string/email" />
 
+    <!-- Botó per a tancar sessió -->
     <Button
         android:id="@+id/button_logout"
         android:layout_marginTop="24dp"

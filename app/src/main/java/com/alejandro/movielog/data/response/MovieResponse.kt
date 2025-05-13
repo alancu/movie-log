@@ -2,8 +2,10 @@ package com.alejandro.movielog.data.response
 
 import com.alejandro.movielog.data.model.Movie
 
-// classe per a guardar resposta de l'API
-// "data class" s'utilitza per a representar dades i crea algunes funcions per defecte
+/**
+ * Classe de resposta per a l'endpoint de pel·lícules.
+ * Conté una llista de pel·lícules que s'obté de l'API.
+ */
 data class MovieResponse (
     val results: List<Movie>
 )

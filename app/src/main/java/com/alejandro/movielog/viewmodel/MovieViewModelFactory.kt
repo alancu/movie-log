@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.alejandro.movielog.repository.MovieRepository
 
+/**
+ * Fàbrica de ViewModel que injecta el repositori a MovieViewModel.
+ */
 class MovieViewModelFactory(
     private val repository: MovieRepository
 ) : ViewModelProvider.Factory {

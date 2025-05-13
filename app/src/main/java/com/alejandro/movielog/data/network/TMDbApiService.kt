@@ -6,22 +6,31 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-// interfície que defineix les peticions a l'API de TMDb
+/**
+ * Interfície que defineix les crides HTTP a l'API de TMDb mitjançant Retrofit.
+ */
 interface TMDbApiService {
-    // petició GET a l'endpoint 'movie/popular' de l'API per a obtindre pel·lícules populars
+
+    /**
+     * Retorna una llista de pel·lícules populars.
+     */
     @GET("movie/popular")
-    // 'suspend' indica que és una funció que es pot executar de manera asíncrona
     suspend fun getPopularMovies(@Query("api_key") apiKey: String): MovieResponse
 
+    /**
+     * Busca pel·lícules a partir d'un text de consulta.
+     */
     @GET("search/movie")
     suspend fun searchMovies(
         @Query("api_key") apiKey: String,
         @Query("query") query: String
     ): MovieResponse
 
+    /**
+     * Obté els vídeos d'una pel·lícula donat el seu ID.
+     */
     @GET("movie/{movie_id}/videos")
     suspend fun getMovieVideos(
-        // substituïm {movie_id} a l'URL pel valor de movieId
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
     ): VideoResponse

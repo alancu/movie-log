@@ -8,6 +8,9 @@ import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.repository.MovieRepository
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel que gestiona la lògica de les pel·lícules i emet dades a la UI.
+ */
 class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
 
     private val _movies = MutableLiveData<List<Movie>>()
@@ -16,6 +19,9 @@ class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    /**
+     * Carrega la llista de pel·lícules populars.
+     */
     fun loadPopularMovies() {
         viewModelScope.launch {
             try {
@@ -27,6 +33,9 @@ class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
         }
     }
 
+    /**
+     * Cerca pel·lícules a partir d'un text de consulta.
+     */
     fun searchMovies(query: String) {
         viewModelScope.launch {
             try {

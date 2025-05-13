@@ -1,6 +1,8 @@
 package com.alejandro.movielog.data.model
 
-// per a l'API TMDb els vídeos van "a part" de les pel·lícules i per això cal una classe pròpia
+/**
+ * Classe que representa el tràiler d'una pel·lícula
+ */
 data class Video(
     val id: String,
     val key: String,

@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    Menú principal de la toolbar (barra superior)
+-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Buscador de pel·lícules -->
     <item
         android:id="@+id/action_search"
         android:title="@string/search_movies"
         android:icon="@android:drawable/ic_menu_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
-
+    <!-- icona personalitzada per accedir al perfil d’usuari -->
     <item
         android:id="@+id/action_user"
         android:title="@string/user"

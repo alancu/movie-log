@@ -16,6 +16,10 @@ import com.alejandro.movielog.ui.components.UserProfileDialog
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
+
+/**
+ * Activitat principal de l'app. Mostra la llista de pel·lícules i gestiona la barra d'eines amb la cerca i el perfil d'usuari.
+ */
 @Suppress("DEPRECATION")
 class MainActivity : AppCompatActivity() {
 
@@ -23,11 +27,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        // Configura la toolbar
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = getString(R.string.popular_movies)
 
-        // afegim els fragments de búsqueda i llistat de pel·lícules
+        // Mostra el fragment amb la llista de pel·lícules
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_movie_list, MovieListFragment())
@@ -37,6 +42,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        // Configura la barra de cerca
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.search_movies)
@@ -53,15 +60,12 @@ class MainActivity : AppCompatActivity() {
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
+            override fun onQueryTextChange(newText: String?): Boolean = false
         })
 
-        //afegim la imatge de perfil
+        // Carrega la imatge de perfil
         val userItem = menu.findItem(R.id.action_user)
         val actionView = userItem?.actionView
-
         val userImage = actionView?.findViewById<ImageView>(R.id.image_user_menu)
 
         val account = com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -74,10 +78,9 @@ class MainActivity : AppCompatActivity() {
                 .into(userImage!!)
         }
 
+        // Mostra el diàleg de perfil
         userImage?.setOnClickListener {
-            val dialog = UserProfileDialog(account) {
-                signOut()
-            }
+            val dialog = UserProfileDialog(account) { signOut() }
             dialog.show(supportFragmentManager, "user_profile")
         }
 
@@ -90,10 +93,7 @@ class MainActivity : AppCompatActivity() {
                 val account = com.google.android.gms.auth.api.signin.GoogleSignIn
                     .getLastSignedInAccount(this)
                 if (account != null) {
-                    val dialog = UserProfileDialog(account) {
-                        // Passem la funció signOut com a paràmetre al diàleg (s'executarà en fer logout)
-                        signOut()
-                    }
+                    val dialog = UserProfileDialog(account) { signOut() }
                     dialog.show(supportFragmentManager, "UserProfileDialog")
                 } else {
                     Toast.makeText(this, "No s'ha iniciat sessió", Toast.LENGTH_SHORT).show()
@@ -104,14 +104,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Tanca la sessió de l'usuari i redirigeix a la pantalla de login.
+     */
     private fun signOut() {
-        // tanquem la sessió de Firebase
         FirebaseAuth.getInstance().signOut()
-        // redirigir a l'activitat de login
         startActivity(Intent(this, LoginActivity::class.java))
-        @Suppress("DEPRECATION")
         overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
-        // tanquem esta activitat
         finish()
     }
 }
