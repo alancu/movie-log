@@ -3,15 +3,13 @@ package com.alejandro.movielog.ui.main
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alejandro.movielog.R
 import com.alejandro.movielog.databinding.ActivitySearchBinding
-import com.alejandro.movielog.repository.MovieRepository
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.viewmodel.MovieViewModel
-import com.alejandro.movielog.viewmodel.MovieViewModelFactory
+import com.alejandro.movielog.viewmodel.ViewModelProviderUtil
 
 class SearchActivity : AppCompatActivity() {
 
@@ -34,11 +32,7 @@ class SearchActivity : AppCompatActivity() {
         binding.rvSearchResults.layoutManager = LinearLayoutManager(this)
         binding.rvSearchResults.adapter = adapter
 
-        // Setup ViewModel
-        val apiKey = getString(R.string.tmdb_api_key)
-        val repository = MovieRepository(apiKey)
-        val factory = MovieViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
+        viewModel = ViewModelProviderUtil.provideMovieViewModel(this, this)
 
         // Observem els resultats de la cerca
         viewModel.movies.observe(this) { movies ->

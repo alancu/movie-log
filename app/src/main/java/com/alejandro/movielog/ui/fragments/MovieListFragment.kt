@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.R
-import com.alejandro.movielog.repository.MovieRepository
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.viewmodel.MovieViewModel
-import com.alejandro.movielog.viewmodel.MovieViewModelFactory
+import com.alejandro.movielog.viewmodel.ViewModelProviderUtil
 
 /**
  * Fragment que mostra la llista de pel·lícules populars i gestiona la cerca.
@@ -32,10 +30,7 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         adapter = MovieAdapter(mutableListOf())
         recyclerView.adapter = adapter
 
-        val apiKey = getString(R.string.tmdb_api_key)
-        val repository = MovieRepository(apiKey)
-        val factory = MovieViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[MovieViewModel::class.java]
+        viewModel = ViewModelProviderUtil.provideMovieViewModel(this, requireContext())
 
         observeViewModel()
         viewModel.loadPopularMovies()
@@ -54,12 +49,5 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
             }
         }
-    }
-
-    /**
-     * Crida la búsqueda de pel·lícules des del ViewModel.
-     */
-    fun searchMovies(query: String) {
-        viewModel.searchMovies(query)
     }
 }
