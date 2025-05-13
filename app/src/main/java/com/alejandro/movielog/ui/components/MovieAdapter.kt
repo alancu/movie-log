@@ -1,4 +1,4 @@
-package com.alejandro.movielog.ui
+package com.alejandro.movielog.ui.components
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.alejandro.movielog.MovieDetailActivity
 import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.Movie
+import com.alejandro.movielog.ui.detail.MovieDetailActivity
 import com.bumptech.glide.Glide
 
 class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {

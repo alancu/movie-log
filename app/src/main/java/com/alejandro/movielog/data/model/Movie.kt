@@ -1,4 +1,4 @@
-package com.alejandro.movielog.data
+package com.alejandro.movielog.data.model
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName

@@ -1,4 +1,4 @@
-package com.alejandro.movielog.data
+package com.alejandro.movielog.data.model
 
 // per a l'API TMDb els vídeos van "a part" de les pel·lícules i per això cal una classe pròpia
 data class Video(

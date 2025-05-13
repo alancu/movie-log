@@ -1,4 +1,4 @@
-package com.alejandro.movielog
+package com.alejandro.movielog.ui.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,10 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import com.alejandro.movielog.ui.UserProfileDialog
+import com.alejandro.movielog.ui.login.LoginActivity
+import com.alejandro.movielog.ui.fragments.MovieListFragment
+import com.alejandro.movielog.R
+import com.alejandro.movielog.ui.components.UserProfileDialog
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 
@@ -84,7 +87,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_user -> {
-                val account =com.google.android.gms.auth.api.signin.GoogleSignIn
+                val account = com.google.android.gms.auth.api.signin.GoogleSignIn
                     .getLastSignedInAccount(this)
                 if (account != null) {
                     val dialog = UserProfileDialog(account) {

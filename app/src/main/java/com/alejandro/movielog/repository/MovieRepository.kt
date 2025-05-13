@@ -1,7 +1,7 @@
 package com.alejandro.movielog.repository
 
-import com.alejandro.movielog.data.MovieResponse
-import com.alejandro.movielog.retrofit.RetrofitClient
+import com.alejandro.movielog.data.response.MovieResponse
+import com.alejandro.movielog.data.network.RetrofitClient
 
 class MovieRepository(private val apiKey: String) {
 

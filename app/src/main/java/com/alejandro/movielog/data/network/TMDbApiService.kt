@@ -1,7 +1,7 @@
-package com.alejandro.movielog.retrofit
+package com.alejandro.movielog.data.network
 
-import com.alejandro.movielog.data.MovieResponse
-import com.alejandro.movielog.data.VideoResponse
+import com.alejandro.movielog.data.response.MovieResponse
+import com.alejandro.movielog.data.response.VideoResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

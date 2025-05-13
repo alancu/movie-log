@@ -1,4 +1,4 @@
-package com.alejandro.movielog
+package com.alejandro.movielog.ui.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,8 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.alejandro.movielog.R
 import com.alejandro.movielog.repository.MovieRepository
-import com.alejandro.movielog.ui.MovieAdapter
+import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.viewmodel.MovieViewModel
 import com.alejandro.movielog.viewmodel.MovieViewModelFactory
 

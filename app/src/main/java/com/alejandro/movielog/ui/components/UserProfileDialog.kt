@@ -1,4 +1,4 @@
-package com.alejandro.movielog.ui
+package com.alejandro.movielog.ui.components
 
 import android.annotation.SuppressLint
 import android.app.Dialog

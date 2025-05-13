@@ -1,4 +1,4 @@
-package com.alejandro.movielog
+package com.alejandro.movielog.ui.detail
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,12 +8,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
-import com.alejandro.movielog.data.Movie
-import com.alejandro.movielog.retrofit.RetrofitClient.apiService
+import com.alejandro.movielog.R
+import com.alejandro.movielog.data.model.Movie
+import com.alejandro.movielog.data.network.RetrofitClient
 import com.bumptech.glide.Glide
 import kotlinx.coroutines.launch
-import androidx.core.net.toUri
 
 class MovieDetailActivity : AppCompatActivity() {
 
@@ -46,7 +47,7 @@ class MovieDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 // fer una crida a l'API per obtenir els vídeos
-                val response = apiService.getMovieVideos(movieId, getString(R.string.tmdb_api_key))
+                val response = RetrofitClient.apiService.getMovieVideos(movieId, getString(R.string.tmdb_api_key))
 
                 // Buscar el tràiler en YouTube
                 val youtubeTrailer = response.results.firstOrNull { it.site == "YouTube" && it.type == "Trailer" }

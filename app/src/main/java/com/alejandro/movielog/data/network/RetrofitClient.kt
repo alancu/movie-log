@@ -1,4 +1,4 @@
-package com.alejandro.movielog.retrofit
+package com.alejandro.movielog.data.network
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

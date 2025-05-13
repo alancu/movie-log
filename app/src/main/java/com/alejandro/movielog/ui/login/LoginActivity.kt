@@ -1,12 +1,15 @@
-package com.alejandro.movielog
+package com.alejandro.movielog.ui.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.alejandro.movielog.R
+import com.alejandro.movielog.ui.main.MainActivity
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 @Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
@@ -74,7 +77,7 @@ class LoginActivity : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(idToken: String) {
         // convertim el token de Google a una credencial de Firebase
-        val credential = com.google.firebase.auth.GoogleAuthProvider.getCredential(idToken, null)
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
         firebaseAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
