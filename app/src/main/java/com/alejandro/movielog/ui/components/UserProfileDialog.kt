@@ -5,12 +5,12 @@ import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.alejandro.movielog.R
-import com.bumptech.glide.Glide
-
+import com.alejandro.movielog.utils.loadCircularImage
 
 /**
  * Diàleg que mostra la informació de l'usuari iniciat amb Google i permet tancar sessió.
@@ -27,11 +27,8 @@ class UserProfileDialog(
         view.findViewById<TextView>(R.id.text_user_name).text = account?.displayName
         view.findViewById<TextView>(R.id.text_user_email).text = account?.email
 
-        Glide.with(requireContext())
-            .load(account?.photoUrl)
-            .placeholder(R.drawable.ic_user)
-            .circleCrop()
-            .into(view.findViewById(R.id.image_user_photo))
+        val imageViewUserPhoto: ImageView = view.findViewById(R.id.image_user_photo)
+        imageViewUserPhoto.loadCircularImage(account?.photoUrl.toString())
 
         view.findViewById<Button>(R.id.button_logout).setOnClickListener {
             dismiss()

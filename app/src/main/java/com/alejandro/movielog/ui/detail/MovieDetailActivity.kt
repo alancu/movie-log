@@ -14,7 +14,7 @@ import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.data.network.RetrofitClient
 import com.alejandro.movielog.utils.Constants
-import com.bumptech.glide.Glide
+import com.alejandro.movielog.utils.loadImage
 import kotlinx.coroutines.launch
 
 /**
@@ -38,9 +38,7 @@ class MovieDetailActivity : AppCompatActivity() {
         descriptionTextView.text = movie?.overview
 
         // Posem la imatge del pòster
-        Glide.with(this)
-            .load("${Constants.POSTER_BASE_URL}${movie?.posterPath}")
-            .into(posterImageView)
+        posterImageView.loadImage("${Constants.POSTER_BASE_URL}${movie?.posterPath}")
 
         // Carreguem el tràiler
         movie?.id?.let { loadMovieTrailer(it) }

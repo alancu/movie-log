@@ -14,7 +14,7 @@ import com.alejandro.movielog.ui.fragments.MovieListFragment
 import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.UserProfileDialog
 import com.alejandro.movielog.utils.Constants
-import com.bumptech.glide.Glide
+import com.alejandro.movielog.utils.loadCircularImage
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -69,11 +69,8 @@ class MainActivity : AppCompatActivity() {
         val account = com.google.android.gms.auth.api.signin.GoogleSignIn
             .getLastSignedInAccount(this)
         account?.let {
-            Glide.with(this)
-                .load(it.photoUrl)
-                .placeholder(R.drawable.ic_user)
-                .circleCrop()
-                .into(userImage!!)
+            userImage?.loadCircularImage(it.photoUrl.toString())
+
         }
 
         // Mostra el diàleg de perfil

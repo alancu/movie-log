@@ -12,7 +12,7 @@ import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.ui.detail.MovieDetailActivity
 import com.alejandro.movielog.utils.Constants
-import com.bumptech.glide.Glide
+import com.alejandro.movielog.utils.loadImage
 
 /**
  * Adaptador per a mostrar pel·lícules en un RecyclerView.
@@ -29,9 +29,7 @@ class MovieAdapter(private val movieList: MutableList<Movie>) : RecyclerView.Ada
         holder.title.text = movie.title
         holder.description.text = movie.overview
 
-        Glide.with(holder.poster.context)
-            .load("${Constants.POSTER_BASE_URL}${movie.posterPath}")
-            .into(holder.poster)
+        holder.poster.loadImage("${Constants.POSTER_BASE_URL}${movie.posterPath}")
 
         holder.itemView.setOnClickListener {
             val context = holder.itemView.context
