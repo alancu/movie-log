@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.glide)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.fragment.ktx)
 
     // Firebase
     implementation(platform(libs.firebase.bom))
