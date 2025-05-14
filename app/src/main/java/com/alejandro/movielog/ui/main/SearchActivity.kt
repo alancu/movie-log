@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alejandro.movielog.R
 import com.alejandro.movielog.databinding.ActivitySearchBinding
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.utils.Constants
@@ -24,10 +23,16 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup toolbar
+        // configurem la toolbar
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.search_movies)
+
+        // obtenim la consulta des de l'Intent
+        val query = intent.getStringExtra(Constants.Extras.EXTRA_QUERY)
+        if (!query.isNullOrEmpty()) {
+            supportActionBar?.title = "\"$query\""
+            viewModel.searchMovies(query)
+        }
 
         // Configura el RecyclerView
         adapter = MovieAdapter()
@@ -45,8 +50,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        // Obté la consulta des de l'Intent
-        val query = intent.getStringExtra(Constants.Extras.EXTRA_QUERY)
         if (!query.isNullOrEmpty()) {
             viewModel.searchMovies(query)
         }
