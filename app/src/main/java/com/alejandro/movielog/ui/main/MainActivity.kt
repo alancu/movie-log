@@ -1,6 +1,5 @@
 package com.alejandro.movielog.ui.main
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,14 +8,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
-import com.alejandro.movielog.ui.login.LoginActivity
 import com.alejandro.movielog.ui.fragments.MovieListFragment
 import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.UserProfileDialog
 import com.alejandro.movielog.utils.Constants
+import com.alejandro.movielog.utils.auth.UserAuthHelper
 import com.alejandro.movielog.utils.loadCircularImage
 import com.alejandro.movielog.utils.navigateTo
-import com.google.firebase.auth.FirebaseAuth
 
 
 /**
@@ -65,8 +63,7 @@ class MainActivity : AppCompatActivity() {
         val actionView = userItem?.actionView
         val userImage = actionView?.findViewById<ImageView>(R.id.image_user_menu)
 
-        val account = com.google.android.gms.auth.api.signin.GoogleSignIn
-            .getLastSignedInAccount(this)
+        val account = UserAuthHelper.getGoogleAccount(this)
         account?.let {
             userImage?.loadCircularImage(it.photoUrl.toString())
 
@@ -74,20 +71,24 @@ class MainActivity : AppCompatActivity() {
 
         // Mostra el diàleg de perfil
         userImage?.setOnClickListener {
-            val dialog = UserProfileDialog(account) { signOut() }
+            val dialog = UserProfileDialog(account) {
+                UserAuthHelper.logout(this)
+                finish()
+            }
             dialog.show(supportFragmentManager, "user_profile")
         }
-
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_user -> {
-                val account = com.google.android.gms.auth.api.signin.GoogleSignIn
-                    .getLastSignedInAccount(this)
-                if (account != null) {
-                    val dialog = UserProfileDialog(account) { signOut() }
+                if (UserAuthHelper.isUserLoggedIn) {
+                    val account = UserAuthHelper.getGoogleAccount(this)
+                    val dialog = UserProfileDialog(account) {
+                        UserAuthHelper.logout(this)
+                        finish()
+                    }
                     dialog.show(supportFragmentManager, "UserProfileDialog")
                 } else {
                     Toast.makeText(this, "No s'ha iniciat sessió", Toast.LENGTH_SHORT).show()
@@ -98,13 +99,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /**
-     * Tanca la sessió de l'usuari i redirigeix a la pantalla de login.
-     */
-    private fun signOut() {
-        FirebaseAuth.getInstance().signOut()
-        startActivity(Intent(this, LoginActivity::class.java))
-        overridePendingTransition(R.anim.activity_enter, R.anim.activity_exit)
-        finish()
-    }
 }

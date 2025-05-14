@@ -1,3 +1,4 @@
+
 package com.alejandro.movielog.ui.components
 
 import android.annotation.SuppressLint
@@ -20,6 +21,7 @@ class UserProfileDialog(
     private val account: com.google.android.gms.auth.api.signin.GoogleSignInAccount?,
     private val onLogout: () -> Unit
 ) : DialogFragment() {
+
     @SuppressLint("UseGetLayoutInflater")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val view = LayoutInflater.from(context).inflate(R.layout.dialog_user_profile, null)
