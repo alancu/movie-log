@@ -35,7 +35,7 @@ fun ImageView.loadCircularImage(url: String) {
  */
 fun Context.openMovieDetail(movie: Movie) {
     val intent = Intent(this, MovieDetailActivity::class.java)
-    intent.putExtra(Constants.EXTRA_MOVIE, movie)
+    intent.putExtra(Constants.Extras.EXTRA_MOVIE, movie)
     startActivity(intent)
 }
 

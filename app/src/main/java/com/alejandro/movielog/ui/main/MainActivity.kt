@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
-                    navigateTo<SearchActivity>(Constants.EXTRA_QUERY to query)
+                    navigateTo<SearchActivity>(Constants.Extras.EXTRA_QUERY to query)
                     searchView.clearFocus()
                 }
                 return true

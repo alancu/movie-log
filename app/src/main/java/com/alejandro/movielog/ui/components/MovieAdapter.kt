@@ -39,7 +39,7 @@ class MovieAdapter :
         holder.description.text = movie.overview
 
         // Carrega el pòster de la pel·lícula
-        holder.poster.loadImage("${Constants.POSTER_BASE_URL}${movie.posterPath}")
+        holder.poster.loadImage("${Constants.Api.POSTER_BASE_URL}${movie.posterPath}")
 
         // Acció al fer clic: obri l'activitat de detalls
         holder.itemView.setOnClickListener {
@@ -73,8 +73,6 @@ class MovieAdapter :
 
     /**
      * Actualitza la llista de pel·lícules amb una nova llista.
-     *
-     * @param newMovies Llista nova de pel·lícules.
      */
     fun updateMovies(newMovies: List<Movie>) {
         submitList(newMovies)

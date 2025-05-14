@@ -45,7 +45,7 @@ class SearchActivity : AppCompatActivity() {
         }
 
         // Obté la consulta des de l'Intent
-        val query = intent.getStringExtra(Constants.EXTRA_QUERY)
+        val query = intent.getStringExtra(Constants.Extras.EXTRA_QUERY)
         if (!query.isNullOrEmpty()) {
             viewModel.searchMovies(query)
         }

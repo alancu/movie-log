@@ -28,7 +28,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         // Recupera l'objecte Movie passat a l'Intent
         @Suppress("DEPRECATION")
-        val movie: Movie? = intent.getParcelableExtra(Constants.EXTRA_MOVIE)
+        val movie: Movie? = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
 
         val titleTextView: TextView = findViewById(R.id.tv_movie_detail_title)
         val descriptionTextView: TextView = findViewById(R.id.tv_movie_detail_description)
@@ -38,7 +38,7 @@ class MovieDetailActivity : AppCompatActivity() {
         descriptionTextView.text = movie?.overview
 
         // Posem la imatge del pòster
-        posterImageView.loadImage("${Constants.POSTER_BASE_URL}${movie?.posterPath}")
+        posterImageView.loadImage("${Constants.Api.POSTER_BASE_URL}${movie?.posterPath}")
 
         // Carreguem el tràiler
         movie?.id?.let { loadMovieTrailer(it) }
@@ -59,7 +59,7 @@ class MovieDetailActivity : AppCompatActivity() {
                 val youtubeTrailer = response.results.firstOrNull { it.site == "YouTube" && it.type == "Trailer" }
 
                 youtubeTrailer?.let { video ->
-                    val youtubeUrl = "${Constants.YOUTUBE_WATCH_URL}${video.key}"
+                    val youtubeUrl = "${Constants.Api.YOUTUBE_WATCH_URL}${video.key}"
 
                     val trailerButton: Button = findViewById(R.id.button_watch_trailer)
                     trailerButton.visibility = View.VISIBLE
