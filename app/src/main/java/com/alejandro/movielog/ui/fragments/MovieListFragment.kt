@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.R
@@ -17,9 +18,10 @@ import com.alejandro.movielog.viewmodel.MovieViewModel
 @SuppressLint("NotifyDataSetChanged")
 class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
+    private val viewModel: MovieViewModel by viewModels() // ✅ Ja injectat amb Hilt
+
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
-    private lateinit var viewModel: MovieViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,8 +30,6 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = MovieAdapter()
         recyclerView.adapter = adapter
-
-        viewModel = ViewModelProviderUtil.provideMovieViewModel(this, requireContext())
 
         observeViewModel()
         viewModel.loadPopularMovies()

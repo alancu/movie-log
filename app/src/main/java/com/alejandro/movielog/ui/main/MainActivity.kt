@@ -15,12 +15,14 @@ import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.auth.UserAuthHelper
 import com.alejandro.movielog.utils.loadCircularImage
 import com.alejandro.movielog.utils.navigateTo
+import dagger.hilt.android.AndroidEntryPoint
 
 
 /**
  * Activitat principal de l'app. Mostra la llista de pel·lícules i gestiona la barra d'eines amb la cerca i el perfil d'usuari.
  */
 @Suppress("DEPRECATION")
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

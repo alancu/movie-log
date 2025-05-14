@@ -2,6 +2,7 @@ package com.alejandro.movielog.ui.main
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alejandro.movielog.R
@@ -9,11 +10,13 @@ import com.alejandro.movielog.databinding.ActivitySearchBinding
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.viewmodel.MovieViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySearchBinding
-    private lateinit var viewModel: MovieViewModel
+    private val viewModel: MovieViewModel by viewModels()
     private lateinit var adapter: MovieAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,8 +33,6 @@ class SearchActivity : AppCompatActivity() {
         adapter = MovieAdapter()
         binding.rvSearchResults.layoutManager = LinearLayoutManager(this)
         binding.rvSearchResults.adapter = adapter
-
-        viewModel = ViewModelProviderUtil.provideMovieViewModel(this, this)
 
         // Observem els resultats de la cerca
         viewModel.movies.observe(this) { movies ->
