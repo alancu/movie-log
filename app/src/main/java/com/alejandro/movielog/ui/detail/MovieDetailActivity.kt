@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.Movie
 import com.alejandro.movielog.data.network.RetrofitClient
+import com.alejandro.movielog.utils.ApiKeyProvider
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadImage
 import com.alejandro.movielog.utils.navigateToUrl
@@ -50,7 +51,9 @@ class MovieDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 // fer una crida a l'API per obtenir els vídeos
-                val response = RetrofitClient.apiService.getMovieVideos(movieId, getString(R.string.tmdb_api_key))
+                val response = RetrofitClient.apiService
+                    .getMovieVideos(movieId, ApiKeyProvider.getApiKey(this@MovieDetailActivity))
+
 
                 // Buscar el tràiler en YouTube
                 val youtubeTrailer = response.results.firstOrNull { it.site == "YouTube" && it.type == "Trailer" }
