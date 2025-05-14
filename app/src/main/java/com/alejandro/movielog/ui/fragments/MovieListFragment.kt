@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.viewmodel.MovieViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Fragment que mostra la llista de pel·lícules populars i gestiona la cerca.
  */
 @SuppressLint("NotifyDataSetChanged")
+@AndroidEntryPoint
 class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
     private val viewModel: MovieViewModel by viewModels() // ✅ Ja injectat amb Hilt
