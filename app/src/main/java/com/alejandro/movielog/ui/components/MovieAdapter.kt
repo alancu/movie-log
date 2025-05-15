@@ -60,8 +60,10 @@ class MovieAdapter :
      * Objecte que defineix com comparar els ítems de la llista.
      */
     companion object {
+        // aquest objecte serveix per a que el ListAdapter sàpiga com actualitzar la llista
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
             override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+                // ací estem diguent-li que si dues pel·lis tenen la mateix id, són la mateixa pel·li
                 return oldItem.id == newItem.id
             }
 
