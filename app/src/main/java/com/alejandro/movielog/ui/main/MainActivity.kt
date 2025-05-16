@@ -40,6 +40,12 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragment_movie_list, MovieListFragment())
                 .commit()
         }
+
+        //TODO proves
+        if (UserAuthHelper.isUserLoggedIn) {
+            com.alejandro.movielog.utils.firebase.FirestoreHelper.testWriteData()
+        }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

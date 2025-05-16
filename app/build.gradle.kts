@@ -58,6 +58,8 @@ dependencies {
     implementation(libs.glide)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.firebase.firestore.ktx)
+
 
     // Firebase
     implementation(platform(libs.firebase.bom))
