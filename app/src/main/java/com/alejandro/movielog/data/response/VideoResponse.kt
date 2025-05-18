@@ -1,6 +1,6 @@
 package com.alejandro.movielog.data.response
 
-import com.alejandro.movielog.data.model.Video
+import com.alejandro.movielog.data.model.ApiVideo
 
 /**
  * Classe de resposta per a l'endpoint de vídeos d'una pel·lícula.
@@ -8,5 +8,5 @@ import com.alejandro.movielog.data.model.Video
  */
 data class VideoResponse (
     val id: Int,
-    val results: List<Video>
+    val results: List<ApiVideo>
 )

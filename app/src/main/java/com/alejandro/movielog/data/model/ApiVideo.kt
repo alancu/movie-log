@@ -1,9 +1,9 @@
 package com.alejandro.movielog.data.model
 
 /**
- * Classe que representa el tràiler d'una pel·lícula
+ * Classe de dades que representa un tràiler obtingut de l'API de TMDb.
  */
-data class Video(
+data class ApiVideo(
     val id: String,
     val key: String,
     val name: String,

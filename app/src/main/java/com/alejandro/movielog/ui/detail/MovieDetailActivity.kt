@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.alejandro.movielog.R
-import com.alejandro.movielog.data.model.Movie
+import com.alejandro.movielog.data.model.ApiMovie
 import com.alejandro.movielog.data.network.RetrofitClient
 import com.alejandro.movielog.utils.ApiKeyProvider
 import com.alejandro.movielog.utils.Constants
@@ -28,20 +28,20 @@ class MovieDetailActivity : AppCompatActivity() {
 
         // Recupera l'objecte Movie passat a l'Intent
         @Suppress("DEPRECATION")
-        val movie: Movie? = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
+        val apiMovie: ApiMovie? = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
 
         val titleTextView: TextView = findViewById(R.id.tv_movie_detail_title)
         val descriptionTextView: TextView = findViewById(R.id.tv_movie_detail_description)
         val posterImageView: ImageView = findViewById(R.id.iv_movie_detail_poster)
 
-        titleTextView.text = movie?.title
-        descriptionTextView.text = movie?.overview
+        titleTextView.text = apiMovie?.title
+        descriptionTextView.text = apiMovie?.overview
 
         // Posem la imatge del pòster
-        posterImageView.loadImage("${Constants.Api.POSTER_BASE_URL}${movie?.posterPath}")
+        posterImageView.loadImage("${Constants.Api.POSTER_BASE_URL}${apiMovie?.posterPath}")
 
         // Carreguem el tràiler
-        movie?.id?.let { loadMovieTrailer(it) }
+        apiMovie?.id?.let { loadMovieTrailer(it) }
     }
 
     /**

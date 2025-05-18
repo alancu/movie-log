@@ -5,11 +5,11 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 /**
- * Classe de dades que representa una pel·lícula rebuda de l'API TMDb.
- * Es fa parcelable per poder passar-la entre activitats mitjançant intents.
+ * Classe de dades que representa una pel·lícula obtinguda de l'API de TMDb.
+ * Esta classe s'utilitza per a mostrar pel·lícules en temps real, no per a emmagatzemar-les.
  */
 @Parcelize
-data class Movie (
+data class ApiMovie(
     val id: Int,
     val title: String,
     val overview: String,

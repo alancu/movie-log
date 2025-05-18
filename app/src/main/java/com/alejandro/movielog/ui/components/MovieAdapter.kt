@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.R
-import com.alejandro.movielog.data.model.Movie
+import com.alejandro.movielog.data.model.ApiMovie
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadImage
 import com.alejandro.movielog.utils.openMovieDetail
@@ -19,7 +19,7 @@ import com.alejandro.movielog.utils.openMovieDetail
  * Utilitza ListAdapter amb DiffUtil per a actualitzacions eficients.
  */
 class MovieAdapter :
-    ListAdapter<Movie, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
+    ListAdapter<ApiMovie, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
     /**
      * Crea un ViewHolder per a una nova vista de pel·lícula.
@@ -61,13 +61,13 @@ class MovieAdapter :
      */
     companion object {
         // aquest objecte serveix per a que el ListAdapter sàpiga com actualitzar la llista
-        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<Movie>() {
-            override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ApiMovie>() {
+            override fun areItemsTheSame(oldItem: ApiMovie, newItem: ApiMovie): Boolean {
                 // ací estem diguent-li que si dues pel·lis tenen la mateix id, són la mateixa pel·li
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            override fun areContentsTheSame(oldItem: ApiMovie, newItem: ApiMovie): Boolean {
                 return oldItem == newItem
             }
         }
@@ -76,7 +76,7 @@ class MovieAdapter :
     /**
      * Actualitza la llista de pel·lícules amb una nova llista.
      */
-    fun updateMovies(newMovies: List<Movie>) {
-        submitList(newMovies)
+    fun updateMovies(newApiMovies: List<ApiMovie>) {
+        submitList(newApiMovies)
     }
 }

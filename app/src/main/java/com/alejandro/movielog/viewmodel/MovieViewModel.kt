@@ -3,7 +3,7 @@ package com.alejandro.movielog.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.alejandro.movielog.data.model.Movie
+import com.alejandro.movielog.data.model.ApiMovie
 import com.alejandro.movielog.repository.MovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ import javax.inject.Inject
 class MovieViewModel  @Inject constructor(private val repository: MovieRepository)
     : BaseViewModel() {
 
-    private val _movies = MutableLiveData<List<Movie>>()
-    val movies: LiveData<List<Movie>> = _movies
+    private val _movies = MutableLiveData<List<ApiMovie>>()
+    val movies: LiveData<List<ApiMovie>> = _movies
 
     fun loadPopularMovies() {
         viewModelScope.launch {
