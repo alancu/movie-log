@@ -24,73 +24,79 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /**
- * Activitat que mostra els detalls d'una pel·lícula i permet veure el tràiler si està disponible.
+ * Activitat que mostra els detalls d'una pel·lícul.
  */
 @AndroidEntryPoint
 class MovieDetailActivity : AppCompatActivity() {
 
     private val favoriteViewModel: FavoriteViewModel by viewModels()
-    private var apiMovie: ApiMovie? = null // si ho has passat per intent
+    private var apiMovie: ApiMovie? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
 
-        // Recupera l'objecte Movie passat a l'Intent
         @Suppress("DEPRECATION")
         apiMovie = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
 
         val titleTextView: TextView = findViewById(R.id.tv_movie_detail_title)
         val descriptionTextView: TextView = findViewById(R.id.tv_movie_detail_description)
         val posterImageView: ImageView = findViewById(R.id.iv_movie_detail_poster)
+        val fabFavorite: FloatingActionButton = findViewById(R.id.fab_favorite)
 
+        // Mostra les dades de la pel·lícula
         titleTextView.text = apiMovie?.title
         descriptionTextView.text = apiMovie?.overview
-
-        // Posem la imatge del pòster
         posterImageView.loadImage("${Constants.Api.POSTER_BASE_URL}${apiMovie?.posterPath}")
 
-        // Carreguem el tràiler
+        // Carrega el tràiler de la pel·lícula
         apiMovie?.id?.let { loadMovieTrailer(it) }
 
-        // Botó de guardar
-        val fabFavorite = findViewById<FloatingActionButton>(R.id.fab_favorite)
+        // Observa si la pel·lícula està en favorits i actualitza la icona
+        favoriteViewModel.isFavorite.observe(this) { isFav ->
+            fabFavorite.setImageResource(
+                if (isFav) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_border
+            )
+        }
+
+        // Comprova si la pel·lícula ja està en favorits
+        apiMovie?.id?.let { movieId ->
+            favoriteViewModel.checkIfFavorite(movieId)
+        }
+
+        // Alterna guardar o eliminar dels favorits
         fabFavorite.setOnClickListener {
-            apiMovie?.let {
-                val saved = it.toSavedMovie()
-                favoriteViewModel.addFavorite(saved)
-                Toast.makeText(this, "Afegida a favorits", Toast.LENGTH_SHORT).show()
+            apiMovie?.let { movie ->
+                if (favoriteViewModel.isFavorite.value == true) {
+                    favoriteViewModel.removeFavorite(movie.id)
+                    Toast.makeText(this, "Eliminada de favorits", Toast.LENGTH_SHORT).show()
+                } else {
+                    favoriteViewModel.addFavorite(movie.toSavedMovie())
+                    Toast.makeText(this, "Afegida a favorits", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
 
     /**
-     * Fa una crida a l'API per obtenir el tràiler de la pel·lícula i obrir-lo en YouTube.
+     * Fa una crida a l'API per a obtenir el tràiler de la pel·lícula i mostrar el botó si existeix
      */
     private fun loadMovieTrailer(movieId: Int) {
         lifecycleScope.launch {
             try {
-                // fer una crida a l'API per obtenir els vídeos
                 val response = RetrofitClient.apiService
                     .getMovieVideos(movieId, ApiKeyProvider.getApiKey(this@MovieDetailActivity))
 
-
-                // Buscar el tràiler en YouTube
                 val youtubeTrailer = response.results.firstOrNull { it.site == "YouTube" && it.type == "Trailer" }
 
                 youtubeTrailer?.let { video ->
-                    val youtubeUrl = "${Constants.Api.YOUTUBE_WATCH_URL}${video.key}"
-
                     val trailerButton: Button = findViewById(R.id.button_watch_trailer)
                     trailerButton.visibility = View.VISIBLE
                     trailerButton.setOnClickListener {
-                        navigateToUrl(youtubeUrl)
+                        navigateToUrl("${Constants.Api.YOUTUBE_WATCH_URL}${video.key}")
                     }
                 }
-
-
             } catch (e: Exception) {
-                // Maneig d'errors
                 Log.e("TrailerError", getString(R.string.error_loading_trailer), e)
             }
         }

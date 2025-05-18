@@ -1,6 +1,8 @@
 package com.alejandro.movielog.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alejandro.movielog.data.model.SavedMovie
@@ -16,6 +18,8 @@ import javax.inject.Inject
 class FavoriteViewModel @Inject constructor(
     private val repository: UserMovieRepository
 ) : ViewModel() {
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isFavorite: LiveData<Boolean> = _isFavorite
 
     /**
      * Guarda una pel·lícula a Firestore dins de la col·lecció de favorits de l'usuari.
@@ -24,8 +28,30 @@ class FavoriteViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repository.saveFavorite(movie)
+                _isFavorite.value = true
             } catch (e: Exception) {
                 Log.e("FavoriteViewModel", "Error afegint a favorits", e)
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun checkIfFavorite(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                _isFavorite.value = repository.isFavorite(movieId)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    fun removeFavorite(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                repository.deleteFavorite(movieId)
+                _isFavorite.value = false
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }

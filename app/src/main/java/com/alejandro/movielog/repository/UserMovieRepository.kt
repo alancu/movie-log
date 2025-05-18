@@ -34,5 +34,12 @@ class UserMovieRepository @Inject constructor() {
             .await()
     }
 
-    //TODO: llegir, eliminar, etc...
+    suspend fun isFavorite(movieId: Int): Boolean {
+        val snapshot = favoritesCollection.document(movieId.toString()).get().await()
+        return snapshot.exists()
+    }
+
+    suspend fun deleteFavorite(movieId: Int) {
+        favoritesCollection.document(movieId.toString()).delete().await()
+    }
 }
