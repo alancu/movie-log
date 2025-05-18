@@ -20,4 +20,6 @@
     <string name="email">Correu electrònic</string>
     <string name="profile_picture">Imatge de perfil</string>
     <string name="search_results">Resultats de la búsqueda</string>
+    <string name="save_favorite">Guardar en favorits</string>
+    <string name="error_loading_trailer">Error carregant el tràiler</string>
 </resources>

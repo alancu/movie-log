@@ -8,10 +8,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /**
- * Repositori que centralitza les operacions de xarxa relacionades amb les pel·lícules.
+ * Repositori encarregat de recuperar pel·lícules des de l'API de TMDb.
  */
-class MovieRepository @Inject constructor(@ApplicationContext private val context: Context){
+class ApiMovieRepository @Inject constructor(@ApplicationContext private val context: Context) {
+
     private val apiKey = ApiKeyProvider.getApiKey(context)
+
     /**
      * Obté una llista de pel·lícules populars des de l'API.
      */
@@ -20,10 +22,9 @@ class MovieRepository @Inject constructor(@ApplicationContext private val contex
     }
 
     /**
-     * Busca pel·lícules a partir d'un text de consulta.
+     * Busca pel·lícules a partir d'una consulta a l'API.
      */
     suspend fun searchMovies(query: String): MovieResponse {
         return RetrofitClient.apiService.searchMovies(apiKey, query)
     }
 }
-

@@ -6,6 +6,8 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.alejandro.movielog.R
@@ -15,12 +17,20 @@ import com.alejandro.movielog.utils.ApiKeyProvider
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadImage
 import com.alejandro.movielog.utils.navigateToUrl
+import com.alejandro.movielog.utils.toSavedMovie
+import com.alejandro.movielog.viewmodel.FavoriteViewModel
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 /**
  * Activitat que mostra els detalls d'una pel·lícula i permet veure el tràiler si està disponible.
  */
+@AndroidEntryPoint
 class MovieDetailActivity : AppCompatActivity() {
+
+    private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private var apiMovie: ApiMovie? = null // si ho has passat per intent
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +38,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
         // Recupera l'objecte Movie passat a l'Intent
         @Suppress("DEPRECATION")
-        val apiMovie: ApiMovie? = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
+        apiMovie = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
 
         val titleTextView: TextView = findViewById(R.id.tv_movie_detail_title)
         val descriptionTextView: TextView = findViewById(R.id.tv_movie_detail_description)
@@ -42,6 +52,16 @@ class MovieDetailActivity : AppCompatActivity() {
 
         // Carreguem el tràiler
         apiMovie?.id?.let { loadMovieTrailer(it) }
+
+        // Botó de guardar
+        val fabFavorite = findViewById<FloatingActionButton>(R.id.fab_favorite)
+        fabFavorite.setOnClickListener {
+            apiMovie?.let {
+                val saved = it.toSavedMovie()
+                favoriteViewModel.addFavorite(saved)
+                Toast.makeText(this, "Afegida a favorits", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     /**
@@ -71,7 +91,7 @@ class MovieDetailActivity : AppCompatActivity() {
 
             } catch (e: Exception) {
                 // Maneig d'errors
-                Log.e("TrailerError", "Error carregant el tràiler", e)
+                Log.e("TrailerError", getString(R.string.error_loading_trailer), e)
             }
         }
     }

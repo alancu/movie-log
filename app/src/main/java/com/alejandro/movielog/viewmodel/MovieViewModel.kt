@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.alejandro.movielog.data.model.ApiMovie
-import com.alejandro.movielog.repository.MovieRepository
+import com.alejandro.movielog.repository.ApiMovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -13,7 +13,7 @@ import javax.inject.Inject
  * ViewModel que gestiona la lògica de les pel·lícules i emet dades a la UI.
  */
 @HiltViewModel
-class MovieViewModel  @Inject constructor(private val repository: MovieRepository)
+class MovieViewModel  @Inject constructor(private val repository: ApiMovieRepository)
     : BaseViewModel() {
 
     private val _movies = MutableLiveData<List<ApiMovie>>()
