@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.favorites.FavoriteMoviesActivity
+import com.alejandro.movielog.ui.history.WatchedMoviesActivity
 import com.alejandro.movielog.utils.auth.UserAuthHelper
 import com.alejandro.movielog.utils.loadCircularImage
 import com.alejandro.movielog.utils.navigateTo
@@ -21,6 +22,7 @@ class UserProfileActivity : AppCompatActivity() {
         val textUserEmail = findViewById<TextView>(R.id.text_user_email)
         val buttonFavorites = findViewById<Button>(R.id.button_favorites)
         val buttonLogout = findViewById<Button>(R.id.button_logout)
+        val buttonWatched = findViewById<Button>(R.id.button_watched)
         val account = UserAuthHelper.getGoogleAccount(this)
 
         account?.let {
@@ -36,6 +38,10 @@ class UserProfileActivity : AppCompatActivity() {
         buttonLogout.setOnClickListener {
             UserAuthHelper.logout(this)
             finish()
+        }
+
+        buttonWatched.setOnClickListener {
+            navigateTo<WatchedMoviesActivity>()
         }
     }
 }

@@ -25,4 +25,8 @@
     <string name="favorite_movies">Pel·lícules favorites</string>
     <string name="profile">Perfil</string>
     <string name="open_profile">Obrir perfil</string>
+    <string name="mark_as_watched">Marcar com a vista</string>
+    <string name="remove_from_watched">Eliminar de vistes</string>
+    <string name="watched_movies">Pel·lícules vistes</string>
+    <string name="watched_at">Vista el: %s</string>
 </resources>

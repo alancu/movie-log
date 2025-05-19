@@ -18,7 +18,9 @@ import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadImage
 import com.alejandro.movielog.utils.navigateToUrl
 import com.alejandro.movielog.utils.toSavedMovie
+import com.alejandro.movielog.utils.toWatchedMovie
 import com.alejandro.movielog.viewmodel.FavoriteViewModel
+import com.alejandro.movielog.viewmodel.WatchedViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -30,6 +32,7 @@ import kotlinx.coroutines.launch
 class MovieDetailActivity : AppCompatActivity() {
 
     private val favoriteViewModel: FavoriteViewModel by viewModels()
+    private val watchedViewModel: WatchedViewModel by viewModels()
     private var apiMovie: ApiMovie? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +46,7 @@ class MovieDetailActivity : AppCompatActivity() {
         val descriptionTextView: TextView = findViewById(R.id.tv_movie_detail_description)
         val posterImageView: ImageView = findViewById(R.id.iv_movie_detail_poster)
         val fabFavorite: FloatingActionButton = findViewById(R.id.fab_favorite)
+        val fabWatched: FloatingActionButton = findViewById(R.id.fab_watched)
 
         // Mostra les dades de la pel·lícula
         titleTextView.text = apiMovie?.title
@@ -59,20 +63,46 @@ class MovieDetailActivity : AppCompatActivity() {
             )
         }
 
+        // Observa si la pel·lícula està a l’historial i actualitza la icona
+        watchedViewModel.isWatched.observe(this) { isWatched ->
+            fabWatched.setImageResource(
+                if (isWatched) R.drawable.ic_eye_filled else R.drawable.ic_eye
+            )
+        }
+
         // Comprova si la pel·lícula ja està en favorits
         apiMovie?.id?.let { movieId ->
             favoriteViewModel.checkIfFavorite(movieId)
         }
+
+        // Comprova si la pel·lícula està a “vist”
+        apiMovie?.id?.let { movieId ->
+            watchedViewModel.checkIfWatched(movieId)
+        }
+
 
         // Alterna guardar o eliminar dels favorits
         fabFavorite.setOnClickListener {
             apiMovie?.let { movie ->
                 if (favoriteViewModel.isFavorite.value == true) {
                     favoriteViewModel.removeFavorite(movie.id)
-                    Toast.makeText(this, "Eliminada de favorits", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Eliminada de favorites", Toast.LENGTH_SHORT).show()
                 } else {
                     favoriteViewModel.addFavorite(movie.toSavedMovie())
                     Toast.makeText(this, "Afegida a favorits", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
+        // Alterna guardar o eliminar de l’historial
+        fabWatched.setOnClickListener {
+            apiMovie?.let { movie ->
+                if (watchedViewModel.isWatched.value == true) {
+                    watchedViewModel.removeWatched(movie.id)
+                    Toast.makeText(this, "Eliminada de vistes", Toast.LENGTH_SHORT).show()
+                } else {
+                    watchedViewModel.addWatched(movie.toWatchedMovie())
+                    Toast.makeText(this, "Marcada com a vista", Toast.LENGTH_SHORT).show()
                 }
             }
         }
