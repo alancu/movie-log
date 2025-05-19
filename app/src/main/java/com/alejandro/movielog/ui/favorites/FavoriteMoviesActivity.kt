@@ -1,12 +1,17 @@
 package com.alejandro.movielog.ui.favorites
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alejandro.movielog.databinding.ActivityFavoriteMoviesBinding
+import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.FavoriteAdapter
+import com.alejandro.movielog.ui.detail.MovieDetailActivity
+import com.alejandro.movielog.utils.Constants
+import com.alejandro.movielog.utils.toApiMovie
 import com.alejandro.movielog.viewmodel.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,10 +31,17 @@ class FavoriteMoviesActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = "Favorits"
+        supportActionBar?.title = getString(R.string.favorite_movies)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        adapter = FavoriteAdapter()
+        adapter = FavoriteAdapter { savedMovie ->
+            // converteix SavedMovie a ApiMovie
+            val apiMovie = savedMovie.toApiMovie()
+            val intent = Intent(this, MovieDetailActivity::class.java)
+            intent.putExtra(Constants.Extras.EXTRA_MOVIE, apiMovie)
+            startActivity(intent)
+        }
+
         binding.rvFavorites.layoutManager = LinearLayoutManager(this)
         binding.rvFavorites.adapter = adapter
 

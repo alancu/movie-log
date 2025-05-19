@@ -1,5 +1,6 @@
 package com.alejandro.movielog.ui.components
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +12,17 @@ import com.alejandro.movielog.data.model.SavedMovie
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadImage
 
-class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
+/**
+ * Adaptador per a la llista de pel·lícules guardades per l'usuari (favorits).
+ * Permet especificar una acció al clicar una pel·lícula.
+ */
+class FavoriteAdapter(
+    private val onItemClick: (SavedMovie) -> Unit
+) : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
 
     private val items = mutableListOf<SavedMovie>()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun submitList(newList: List<SavedMovie>) {
         items.clear()
         items.addAll(newList)
@@ -28,7 +36,8 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_movie, parent, false)
         return ViewHolder(view)
     }
 
@@ -39,5 +48,10 @@ class FavoriteAdapter : RecyclerView.Adapter<FavoriteAdapter.ViewHolder>() {
         holder.title.text = movie.title
         holder.description.text = movie.overview
         holder.poster.loadImage("${Constants.Api.POSTER_BASE_URL}${movie.posterPath}")
+
+        // Nou: click listener per obrir detalls
+        holder.itemView.setOnClickListener {
+            onItemClick(movie)
+        }
     }
 }

@@ -13,3 +13,10 @@ fun ApiMovie.toSavedMovie(): SavedMovie = SavedMovie(
     overview = this.overview,
     posterPath = this.posterPath
 )
+
+fun SavedMovie.toApiMovie(): ApiMovie = ApiMovie(
+    id = this.id,
+    title = this.title,
+    overview = this.overview,
+    posterPath = this.posterPath
+)
