@@ -28,11 +28,18 @@
         android:layout_height="wrap_content"
         android:text="@string/email" />
 
-    <!-- Botó per a tancar sessió -->
     <Button
-        android:id="@+id/button_logout"
-        android:layout_marginTop="24dp"
+        android:id="@+id/button_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/logout" />
+        android:text="@string/open_profile"
+        android:layout_marginTop="8dp" />
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:layout_marginTop="8dp" />
+
 </LinearLayout>

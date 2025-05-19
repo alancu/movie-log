@@ -42,4 +42,10 @@ class UserMovieRepository @Inject constructor() {
     suspend fun deleteFavorite(movieId: Int) {
         favoritesCollection.document(movieId.toString()).delete().await()
     }
+
+    suspend fun getFavorites(): List<SavedMovie> {
+        val snapshot = favoritesCollection.get().await()
+        return snapshot.documents.mapNotNull { it.toObject(SavedMovie::class.java) }
+    }
+
 }

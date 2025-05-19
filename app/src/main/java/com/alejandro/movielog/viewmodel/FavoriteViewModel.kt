@@ -1,6 +1,5 @@
 package com.alejandro.movielog.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,8 +17,16 @@ import javax.inject.Inject
 class FavoriteViewModel @Inject constructor(
     private val repository: UserMovieRepository
 ) : ViewModel() {
+
+    private val _errorMessage = MutableLiveData<String?>()
+    val errorMessage: LiveData<String?> = _errorMessage
+
+
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> = _isFavorite
+
+    private val _favoriteMovies = MutableLiveData<List<SavedMovie>>()
+    val favoriteMovies: LiveData<List<SavedMovie>> = _favoriteMovies
 
     /**
      * Guarda una pel·lícula a Firestore dins de la col·lecció de favorits de l'usuari.
@@ -30,8 +37,8 @@ class FavoriteViewModel @Inject constructor(
                 repository.saveFavorite(movie)
                 _isFavorite.value = true
             } catch (e: Exception) {
-                Log.e("FavoriteViewModel", "Error afegint a favorits", e)
                 e.printStackTrace()
+                _errorMessage.value = "Error afegint a favorites: ${e.localizedMessage}"
             }
         }
     }
@@ -42,6 +49,7 @@ class FavoriteViewModel @Inject constructor(
                 _isFavorite.value = repository.isFavorite(movieId)
             } catch (e: Exception) {
                 e.printStackTrace()
+                _errorMessage.value = "Error comprovant si és favorita: ${e.localizedMessage}"
             }
         }
     }
@@ -53,6 +61,18 @@ class FavoriteViewModel @Inject constructor(
                 _isFavorite.value = false
             } catch (e: Exception) {
                 e.printStackTrace()
+                _errorMessage.value = "Error eliminant favorita: ${e.localizedMessage}"
+            }
+        }
+    }
+
+    fun loadFavorites() {
+        viewModelScope.launch {
+            try {
+                _favoriteMovies.value = repository.getFavorites()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _errorMessage.value = "Error carregant favorites: ${e.localizedMessage}"
             }
         }
     }

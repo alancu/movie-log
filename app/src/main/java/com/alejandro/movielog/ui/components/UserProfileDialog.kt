@@ -11,7 +11,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.alejandro.movielog.R
+import com.alejandro.movielog.ui.profile.UserProfileActivity
 import com.alejandro.movielog.utils.loadCircularImage
+import com.alejandro.movielog.utils.navigateTo
 
 /**
  * Diàleg que mostra la informació de l'usuari iniciat amb Google i permet tancar sessió.
@@ -35,6 +37,11 @@ class UserProfileDialog(
         view.findViewById<Button>(R.id.button_logout).setOnClickListener {
             dismiss()
             onLogout()
+        }
+        view.findViewById<Button>(R.id.button_profile).setOnClickListener {
+            dismiss()
+            // Obri la nova activity de perfil
+            requireActivity().navigateTo<UserProfileActivity>()
         }
 
         return AlertDialog.Builder(requireContext())
