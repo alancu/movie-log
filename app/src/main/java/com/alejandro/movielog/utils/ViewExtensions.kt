@@ -9,18 +9,17 @@ import com.alejandro.movielog.data.model.ApiMovie
 import com.alejandro.movielog.ui.detail.MovieDetailActivity
 
 /**
- * Extensió per carregar una imatge en un ImageView des d'una URL.
+ * Conté funcions d'extensió per a ImageView i Context relacionades amb la UI.
  */
+
+// Carrega una imatge en un ImageView des d'una URL (sense placeholder)
 fun ImageView.loadImage(url: String?) {
     Glide.with(this.context)
         .load(url)
         .into(this)
 }
 
-/**
- * Extensió per carregar una imatge en un ImageView des d'una URL.
- * Utilitza Glide amb placeholder i forma circular.
- */
+// Carrega una imatge circular (amb placeholder) en un ImageView (foto de perfil, etc.)
 fun ImageView.loadCircularImage(url: String) {
     Glide.with(this.context)
         .load(url)
@@ -29,14 +28,11 @@ fun ImageView.loadCircularImage(url: String) {
         .into(this)
 }
 
-
 /**
- * Extensió de Context per obrir l'activitat de detalls d'una pel·lícula.
+ * Extensió de Context per obrir directament l'activitat de detalls d'una pel·lícula.
  */
 fun Context.openMovieDetail(apiMovie: ApiMovie) {
     val intent = Intent(this, MovieDetailActivity::class.java)
     intent.putExtra(Constants.Extras.EXTRA_MOVIE, apiMovie)
     startActivity(intent)
 }
-
-

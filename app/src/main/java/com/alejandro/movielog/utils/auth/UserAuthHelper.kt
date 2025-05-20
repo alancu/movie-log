@@ -13,6 +13,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 @Suppress("Deprecation")
 object UserAuthHelper {
 
+    // Instància única de FirebaseAuth per gestionar login/logout
     private val auth = FirebaseAuth.getInstance()
 
     /**
@@ -22,19 +23,20 @@ object UserAuthHelper {
         get() = auth.currentUser != null
 
     /**
-     * Torna el compte de Google actual (si n'hi ha).
+     * Obté el compte de Google actual, o null si no hi ha cap iniciat.
      */
     fun getGoogleAccount(context: Context): com.google.android.gms.auth.api.signin.GoogleSignInAccount? =
         com.google.android.gms.auth.api.signin.GoogleSignIn.getLastSignedInAccount(context)
 
     /**
-     * Torna el client de Google Sign-In amb la configuració de l'app.
+     * Crea i retorna el client de Google Sign-In amb la configuració de l'app.
+     * S'usa per iniciar el procés de login amb Google.
      */
     fun getGoogleClient(context: Context): com.google.android.gms.auth.api.signin.GoogleSignInClient {
         val gso = com.google.android.gms.auth.api.signin.GoogleSignInOptions.Builder(
             com.google.android.gms.auth.api.signin.GoogleSignInOptions.DEFAULT_SIGN_IN
         )
-            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestIdToken(context.getString(R.string.default_web_client_id)) // Web client ID configurat a Google Cloud/Firebase
             .requestEmail()
             .build()
 
@@ -42,7 +44,8 @@ object UserAuthHelper {
     }
 
     /**
-     * Autentica amb Firebase
+     * Autentica l'usuari amb Firebase utilitzant el token de Google obtingut després del login.
+     * Quan finalitza, executa el callback onResult amb true/false depenent de si ha anat bé o no.
      */
     fun authenticate(idToken: String, onResult: (Boolean, Exception?) -> Unit) {
         val credential = GoogleAuthProvider.getCredential(idToken, null)
@@ -57,7 +60,8 @@ object UserAuthHelper {
     }
 
     /**
-     * Tanca la sessió i redirigeix a la pantalla de login.
+     * Tanca la sessió de l'usuari (logout) tant en Firebase com en Google.
+     * Després redirigeix a la pantalla de login.
      */
     fun logout(context: Context) {
         auth.signOut()

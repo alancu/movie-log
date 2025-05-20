@@ -6,9 +6,11 @@ import com.alejandro.movielog.data.model.WatchedMovie
 import com.google.firebase.Timestamp
 
 /**
- * Funció per a convertir una ApiMovie (rebuda de l'API TMDb)
- * en una SavedMovie (per a guardar-la en Firestore).
+ * Conté funcions d'extensió per convertir entre models (ApiMovie, SavedMovie, WatchedMovie).
+ * Facilita passar dades entre l'API, la base de dades i la UI, sense repetir codi de conversió.
  */
+
+// Converteix una ApiMovie (de l'API) a SavedMovie (per a guardar-la a Firestore)
 fun ApiMovie.toSavedMovie(): SavedMovie = SavedMovie(
     id = this.id,
     title = this.title,
@@ -16,6 +18,7 @@ fun ApiMovie.toSavedMovie(): SavedMovie = SavedMovie(
     posterPath = this.posterPath
 )
 
+// Converteix SavedMovie a ApiMovie (per a mostrar a la UI)
 fun SavedMovie.toApiMovie(): ApiMovie = ApiMovie(
     id = this.id,
     title = this.title,
@@ -23,6 +26,7 @@ fun SavedMovie.toApiMovie(): ApiMovie = ApiMovie(
     posterPath = this.posterPath
 )
 
+// Converteix ApiMovie a WatchedMovie (afegint data actual)
 fun ApiMovie.toWatchedMovie(date: Timestamp = Timestamp.now()): WatchedMovie = WatchedMovie(
     id = this.id,
     title = this.title,
@@ -31,6 +35,7 @@ fun ApiMovie.toWatchedMovie(date: Timestamp = Timestamp.now()): WatchedMovie = W
     watchedAt = date
 )
 
+// Converteix WatchedMovie a ApiMovie
 fun WatchedMovie.toApiMovie(): ApiMovie = ApiMovie(
     id = this.id,
     title = this.title,
