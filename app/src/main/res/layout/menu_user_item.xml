@@ -1,3 +1,8 @@
+<!--
+    Layout per a l'element d'usuari del menú de la toolbar.
+    S'utilitza per mostrar la foto de perfil circular de l'usuari en la barra superior (toolbar).
+    No és un menú "normal", sinó un layout per a una acció personalitzada al menú.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
