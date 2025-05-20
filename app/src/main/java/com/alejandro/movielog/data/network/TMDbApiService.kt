@@ -14,7 +14,7 @@ interface TMDbApiService {
     /**
      * Retorna una llista de pel·lícules populars.
      */
-    @GET("movie/popular")
+    @GET("movie/popular") // Indica que aquesta funció farà una petició GET a /movie/popular
     suspend fun getPopularMovies(@Query("api_key") apiKey: String): MovieResponse
 
     /**
