@@ -9,9 +9,12 @@ import javax.inject.Inject
 
 /**
  * Repositori encarregat de recuperar pel·lícules des de l'API de TMDb.
+ * Un repositori és una classe que s'encarrega d'accedir a les dades
+ * així la resta de l'appnomés ha de demanar-li les dades al repositori, sense saber d'on venen.
  */
+//S'injecta el context d'aplicació (@ApplicationContext), necessari per a obtindre la clau d'API.
 class ApiMovieRepository @Inject constructor(@ApplicationContext private val context: Context) {
-
+    // Obté la clau d'API de TMDb utilitzant un helper (ApiKeyProvider)
     private val apiKey = ApiKeyProvider.getApiKey(context)
 
     /**
