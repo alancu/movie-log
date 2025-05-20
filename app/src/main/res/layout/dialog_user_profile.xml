@@ -1,15 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
-    Diàleg que mostra la informació de l'usuari iniciat amb Google (foto, nom, correu) i permet tancar sessió.
--->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:padding="24dp"
-    android:layout_width="match_parent" android:layout_height="wrap_content">
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center_horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
     <ImageView
         android:id="@+id/image_user_photo"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_gravity="center"
         android:contentDescription="@string/profile_picture"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_user" />
@@ -18,6 +17,7 @@
         android:id="@+id/text_user_name"
         android:layout_marginTop="16dp"
         android:textSize="18sp"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/name" />
@@ -26,20 +26,26 @@
         android:id="@+id/text_user_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/email" />
+        android:text="@string/email"
+        android:textSize="15sp"
+        android:layout_marginBottom="8dp" />
 
     <Button
         android:id="@+id/button_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/open_profile"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="12dp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/button_logout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/logout"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rounded_button"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>
