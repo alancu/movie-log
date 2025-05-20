@@ -1,3 +1,8 @@
+<!--
+    Menú principal per a la toolbar (barra superior).
+    Inclou la opció de búsqueda de pel·lícules (SearchView), a diferència de menu_user.xml
+    S'utilitza en activitats on vols que l'usuari puga buscar pel·lícules (ara mateix només MainActivity).
+-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
