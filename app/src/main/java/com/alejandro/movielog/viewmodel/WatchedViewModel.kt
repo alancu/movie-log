@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * ViewModel que gestiona les pel·lícules marcades com a vistes per l'usuari.
+ * ViewModel per gestionar les pel·lícules marcades com a vistes per l'usuari.
+ * Es comunica amb UserMovieRepository per afegir, eliminar i carregar llistats de pel·lícules vistes a Firestore.
+ * Exposa LiveData per la llista de vistes i per saber si una pel·lícula concreta està marcada com a vista.
  */
 @HiltViewModel
 class WatchedViewModel @Inject constructor(
@@ -27,6 +29,9 @@ class WatchedViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
+    /**
+     * Marca una pel·lícula com a vista (guarda a Firestore).
+     */
     fun addWatched(movie: WatchedMovie) {
         viewModelScope.launch {
             try {
@@ -38,6 +43,9 @@ class WatchedViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Elimina una pel·lícula de l'historial de vistes.
+     */
     fun removeWatched(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -49,6 +57,9 @@ class WatchedViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Comprova si una pel·lícula està marcada com a vista.
+     */
     fun checkIfWatched(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -59,6 +70,9 @@ class WatchedViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Carrega les pel·lícules vistes.
+     */
     fun loadWatched() {
         viewModelScope.launch {
             try {

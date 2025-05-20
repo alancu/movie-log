@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * ViewModel que gestiona les pel·lícules guardades per l'usuari a Firestore.
+ * ViewModel per gestionar les pel·lícules guardades en favorits per l'usuari.
+ * Es comunica amb UserMovieRepository per guardar, eliminar i comprovar favorits a Firestore.
+ * Exposa LiveData per saber si una pel·lícula està en favorits i per mostrar la llista de favorits.
  */
 @HiltViewModel
 class FavoriteViewModel @Inject constructor(
@@ -21,7 +23,6 @@ class FavoriteViewModel @Inject constructor(
     private val _errorMessage = MutableLiveData<String?>()
     val errorMessage: LiveData<String?> = _errorMessage
 
-
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> = _isFavorite
 
@@ -29,7 +30,7 @@ class FavoriteViewModel @Inject constructor(
     val favoriteMovies: LiveData<List<SavedMovie>> = _favoriteMovies
 
     /**
-     * Guarda una pel·lícula a Firestore dins de la col·lecció de favorits de l'usuari.
+     * Afig una pel·lícula a favorits (guarda a Firestore).
      */
     fun addFavorite(movie: SavedMovie) {
         viewModelScope.launch {
@@ -43,6 +44,9 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Comprova si una pel·lícula està en favorits.
+     */
     fun checkIfFavorite(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -54,6 +58,9 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Elimina una pel·lícula de favorits.
+     */
     fun removeFavorite(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -66,6 +73,9 @@ class FavoriteViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Carrega totes les pel·lícules guardades en favorits.
+     */
     fun loadFavorites() {
         viewModelScope.launch {
             try {
