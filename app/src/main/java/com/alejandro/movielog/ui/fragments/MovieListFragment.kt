@@ -14,14 +14,15 @@ import com.alejandro.movielog.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Fragment que mostra la llista de pel·lícules populars i gestiona la cerca.
+ * Fragment que mostra la llista de pel·lícules populars a la pantalla principal.
+ * Utilitza MovieAdapter per mostrar les pel·lícules de TMDb rebudes del ViewModel.
+ * Este fragment es carrega dins de MainActivity.
  */
 @SuppressLint("NotifyDataSetChanged")
 @AndroidEntryPoint
 class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
-    private val viewModel: MovieViewModel by viewModels() // ✅ Ja injectat amb Hilt
-
+    private val viewModel: MovieViewModel by viewModels()
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
 
@@ -34,12 +35,14 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
         recyclerView.adapter = adapter
 
         observeViewModel()
+        // Carrega pel·lícules populars en iniciar
         viewModel.loadPopularMovies()
     }
 
     /**
      * Observa els LiveData del ViewModel i actualitza la UI.
      */
+    // LiveData és una classe que notifica automàticament a la UI quan les dades canvien.
     private fun observeViewModel() {
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             adapter.updateMovies(movies)
