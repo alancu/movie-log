@@ -27,9 +27,14 @@ import kotlinx.coroutines.launch
 import androidx.lifecycle.lifecycleScope
 import androidx.appcompat.widget.Toolbar
 
+/**
+ * Activitat que mostra els detalls d'una pel·lícula.
+ * Esta classe hereta de BaseActivity per a compartir la Toolbar i el menú d'usuari.
+ */
 @AndroidEntryPoint
 class MovieDetailActivity : BaseActivity() {
 
+    // ViewModels per gestionar favorits i historial de vistes
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private val watchedViewModel: WatchedViewModel by viewModels()
     private var apiMovie: ApiMovie? = null
@@ -38,12 +43,13 @@ class MovieDetailActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_detail)
 
+        // Obté la pel·lícula passada per intent
         @Suppress("DEPRECATION")
         apiMovie = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
 
         val movieTitle = apiMovie?.title ?: getString(R.string.movie_detail)
 
-        // Configura la Toolbar
+        // Configura la Toolbar amb el títol de la pel·lícula
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setupToolbar(toolbar, movieTitle, showBack = true)
 
@@ -53,39 +59,33 @@ class MovieDetailActivity : BaseActivity() {
         val fabFavorite: FloatingActionButton = findViewById(R.id.fab_favorite)
         val fabWatched: FloatingActionButton = findViewById(R.id.fab_watched)
 
-        // Mostra les dades de la pel·lícula
+        // Mostra dades de la pel·lícula
         titleTextView.text = apiMovie?.title
         descriptionTextView.text = apiMovie?.overview
         posterImageView.loadImage("${Constants.Api.POSTER_BASE_URL}${apiMovie?.posterPath}")
 
-        // Carrega el tràiler de la pel·lícula
+        // Carrega el tràiler (si existeix)
         apiMovie?.id?.let { loadMovieTrailer(it) }
 
-        // Observa si la pel·lícula està en favorits i actualitza la icona
+        // Observa si la pel·lícula està a favorits o vistes, i actualitza els botons
         favoriteViewModel.isFavorite.observe(this) { isFav ->
             fabFavorite.setImageResource(
                 if (isFav) R.drawable.ic_favorite_filled else R.drawable.ic_favorite_border
             )
         }
-
-        // Observa si la pel·lícula està a l’historial i actualitza la icona
         watchedViewModel.isWatched.observe(this) { isWatched ->
             fabWatched.setImageResource(
                 if (isWatched) R.drawable.ic_eye_filled else R.drawable.ic_eye
             )
         }
 
-        // Comprova si la pel·lícula ja està en favorits
+        // Comprova si la pel·lícula està guardada
         apiMovie?.id?.let { movieId ->
             favoriteViewModel.checkIfFavorite(movieId)
-        }
-
-        // Comprova si la pel·lícula està a “vist”
-        apiMovie?.id?.let { movieId ->
             watchedViewModel.checkIfWatched(movieId)
         }
 
-        // Alterna guardar o eliminar dels favorits
+        // Accions dels botons flotants
         fabFavorite.setOnClickListener {
             apiMovie?.let { movie ->
                 if (favoriteViewModel.isFavorite.value == true) {
@@ -97,8 +97,6 @@ class MovieDetailActivity : BaseActivity() {
                 }
             }
         }
-
-        // Alterna guardar o eliminar de l’historial
         fabWatched.setOnClickListener {
             apiMovie?.let { movie ->
                 if (watchedViewModel.isWatched.value == true) {
@@ -124,7 +122,8 @@ class MovieDetailActivity : BaseActivity() {
     }
 
     /**
-     * Fa una crida a l'API per a obtenir el tràiler de la pel·lícula i mostrar el botó si existeix
+     * Carrega el tràiler de la pel·lícula si està disponible a TMDb.
+     * Mostra el botó per veure'l a YouTube si existeix.
      */
     private fun loadMovieTrailer(movieId: Int) {
         lifecycleScope.launch {
@@ -132,6 +131,7 @@ class MovieDetailActivity : BaseActivity() {
                 val response = RetrofitClient.apiService
                     .getMovieVideos(movieId, ApiKeyProvider.getApiKey(this@MovieDetailActivity))
 
+                // Busca el primer vídeo de tipus "Trailer" i site "YouTube"
                 val youtubeTrailer = response.results.firstOrNull { it.site == "YouTube" && it.type == "Trailer" }
 
                 youtubeTrailer?.let { video ->
