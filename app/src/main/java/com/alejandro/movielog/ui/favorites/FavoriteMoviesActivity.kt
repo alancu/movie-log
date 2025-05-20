@@ -16,6 +16,11 @@ import com.alejandro.movielog.utils.toApiMovie
 import com.alejandro.movielog.viewmodel.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Activitat que mostra totes les pel·lícules guardades com a favorites per l'usuari.
+ * Mostra la llista de favorits amb el RecyclerView i permet veure detalls al clicar.
+ * La llista es carrega des de Firestore mitjançant FavoriteViewModel.
+ */
 @AndroidEntryPoint
 class FavoriteMoviesActivity : BaseActivity() {
 
@@ -28,20 +33,21 @@ class FavoriteMoviesActivity : BaseActivity() {
         binding = ActivityFavoriteMoviesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configura la Toolbar amb títol i botó "enrere"
+        // Configura la Toolbar amb títol i botó d'anar enrere
         setupToolbar(binding.toolbar, getString(R.string.favorite_movies), showBack = true)
 
+        // Inicialitza l'adaptador i el RecyclerView
         adapter = FavoriteAdapter { savedMovie ->
-            // converteix SavedMovie a ApiMovie
+            // Quan es fa clic a un ítem, obri la pantalla de detalls de la pel·lícula
             val apiMovie = savedMovie.toApiMovie()
             val intent = Intent(this, MovieDetailActivity::class.java)
             intent.putExtra(Constants.Extras.EXTRA_MOVIE, apiMovie)
             startActivity(intent)
         }
-
         binding.rvFavorites.layoutManager = LinearLayoutManager(this)
         binding.rvFavorites.adapter = adapter
 
+        // Carrega les pel·lícules favorites de l'usuari
         favoriteViewModel.loadFavorites()
 
         favoriteViewModel.favoriteMovies.observe(this) { movies ->
