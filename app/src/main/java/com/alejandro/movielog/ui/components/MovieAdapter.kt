@@ -15,15 +15,14 @@ import com.alejandro.movielog.utils.loadImage
 import com.alejandro.movielog.utils.openMovieDetail
 
 /**
- * Adaptador per a mostrar pel·lícules en un RecyclerView.
- * Utilitza ListAdapter amb DiffUtil per a actualitzacions eficients.
+ * Adaptador per a mostrar pel·lícules populars i el resultat d'una búsqueda en un RecyclerView.
  */
+// DIFF_CALLBACK s'utilitza per a que el RecyclerView sàpiga quins elements han canviat realment
 class MovieAdapter :
     ListAdapter<ApiMovie, MovieAdapter.MovieViewHolder>(DIFF_CALLBACK) {
 
-    /**
-     * Crea un ViewHolder per a una nova vista de pel·lícula.
-     */
+    // Un ViewHolder és un "contenidor" que guarda les referències  a les vistes d'un ítem del RecyclerView
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_movie, parent, false)
@@ -32,16 +31,17 @@ class MovieAdapter :
 
     /**
      * Assigna les dades d'una pel·lícula al ViewHolder corresponent.
+     * S'executa automàticament per cada element de la llista.
      */
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = getItem(position)
         holder.title.text = movie.title
         holder.description.text = movie.overview
 
-        // Carrega el pòster de la pel·lícula
+        // Carrega el pòster de la pel·lícula usant una extensió de Glide
         holder.poster.loadImage("${Constants.Api.POSTER_BASE_URL}${movie.posterPath}")
 
-        // Acció al fer clic: obri l'activitat de detalls
+        // Acció al fer clic: obri l'activitat de detalls (utilitza una extensió)
         holder.itemView.setOnClickListener {
             holder.itemView.context.openMovieDetail(movie)
         }
@@ -50,6 +50,7 @@ class MovieAdapter :
     /**
      * ViewHolder per a cada element de la llista de pel·lícules.
      */
+    // Un ViewHolder és un contenidor on es posen les vistes d'un ítem de la llista.
     class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val title: TextView = itemView.findViewById(R.id.tv_movie_title)
         val description: TextView = itemView.findViewById(R.id.tv_movie_description)
@@ -58,16 +59,17 @@ class MovieAdapter :
 
     /**
      * Objecte que defineix com comparar els ítems de la llista.
+     * DiffUtil compara ítems automàticament.
      */
     companion object {
-        // aquest objecte serveix per a que el ListAdapter sàpiga com actualitzar la llista
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<ApiMovie>() {
             override fun areItemsTheSame(oldItem: ApiMovie, newItem: ApiMovie): Boolean {
-                // ací estem diguent-li que si dues pel·lis tenen la mateix id, són la mateixa pel·li
+                // Compara pel·lícules per id únic (això evita actualitzar tot si només canvia una)
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: ApiMovie, newItem: ApiMovie): Boolean {
+                // Compara tots els camps per veure si el contingut ha canviat realment
                 return oldItem == newItem
             }
         }
