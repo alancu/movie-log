@@ -2,12 +2,13 @@ package com.alejandro.movielog.ui.favorites
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.alejandro.movielog.databinding.ActivityFavoriteMoviesBinding
 import com.alejandro.movielog.R
+import com.alejandro.movielog.databinding.ActivityFavoriteMoviesBinding
+import com.alejandro.movielog.ui.base.BaseActivity
 import com.alejandro.movielog.ui.components.FavoriteAdapter
 import com.alejandro.movielog.ui.detail.MovieDetailActivity
 import com.alejandro.movielog.utils.Constants
@@ -15,11 +16,8 @@ import com.alejandro.movielog.utils.toApiMovie
 import com.alejandro.movielog.viewmodel.FavoriteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-/**
- * Activitat que mostra les pel·lícules guardades com a favorits.
- */
 @AndroidEntryPoint
-class FavoriteMoviesActivity : AppCompatActivity() {
+class FavoriteMoviesActivity : BaseActivity() {
 
     private lateinit var binding: ActivityFavoriteMoviesBinding
     private val favoriteViewModel: FavoriteViewModel by viewModels()
@@ -30,9 +28,8 @@ class FavoriteMoviesActivity : AppCompatActivity() {
         binding = ActivityFavoriteMoviesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.title = getString(R.string.favorite_movies)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        // Configura la Toolbar amb títol i botó "enrere"
+        setupToolbar(binding.toolbar, getString(R.string.favorite_movies), showBack = true)
 
         adapter = FavoriteAdapter { savedMovie ->
             // converteix SavedMovie a ApiMovie
@@ -56,6 +53,12 @@ class FavoriteMoviesActivity : AppCompatActivity() {
                 Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_user, menu)
+        setupUserMenu(menu)
+        return true
     }
 
     override fun onSupportNavigateUp(): Boolean {
