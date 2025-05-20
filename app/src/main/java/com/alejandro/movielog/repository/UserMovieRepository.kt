@@ -3,6 +3,7 @@ package com.alejandro.movielog.repository
 import com.alejandro.movielog.data.model.SavedMovie
 import com.alejandro.movielog.data.model.WatchedMovie
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
@@ -79,7 +80,10 @@ class UserMovieRepository @Inject constructor() {
 
     // obtín totes les pel·lícules vistes
     suspend fun getWatched(): List<WatchedMovie> {
-        val snapshot = watchedCollection.get().await()
+        // Ordenem per data, la més recent primer
+        val snapshot = watchedCollection
+            .orderBy("watchedAt", Query.Direction.DESCENDING)
+            .get().await()
         return snapshot.documents.mapNotNull { it.toObject(WatchedMovie::class.java) }
     }
 }

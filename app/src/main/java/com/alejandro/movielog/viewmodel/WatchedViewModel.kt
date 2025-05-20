@@ -63,8 +63,7 @@ class WatchedViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val watched = repository.getWatched()
-                // Ordenem per data, la més recent primer
-                _watchedMovies.value = watched.sortedByDescending { it.watchedAt }
+                _watchedMovies.value = watched
             } catch (e: Exception) {
                 _errorMessage.value = "Error carregant historial: ${e.localizedMessage}"
             }
