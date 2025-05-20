@@ -2,17 +2,17 @@ package com.alejandro.movielog.ui.detail
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.ApiMovie
 import com.alejandro.movielog.data.network.RetrofitClient
+import com.alejandro.movielog.ui.base.BaseActivity
 import com.alejandro.movielog.utils.ApiKeyProvider
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.loadImage
@@ -24,12 +24,11 @@ import com.alejandro.movielog.viewmodel.WatchedViewModel
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import androidx.lifecycle.lifecycleScope
+import androidx.appcompat.widget.Toolbar
 
-/**
- * Activitat que mostra els detalls d'una pel·lícul.
- */
 @AndroidEntryPoint
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailActivity : BaseActivity() {
 
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private val watchedViewModel: WatchedViewModel by viewModels()
@@ -41,6 +40,12 @@ class MovieDetailActivity : AppCompatActivity() {
 
         @Suppress("DEPRECATION")
         apiMovie = intent.getParcelableExtra(Constants.Extras.EXTRA_MOVIE)
+
+        val movieTitle = apiMovie?.title ?: getString(R.string.movie_detail)
+
+        // Configura la Toolbar
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setupToolbar(toolbar, movieTitle, showBack = true)
 
         val titleTextView: TextView = findViewById(R.id.tv_movie_detail_title)
         val descriptionTextView: TextView = findViewById(R.id.tv_movie_detail_description)
@@ -80,16 +85,15 @@ class MovieDetailActivity : AppCompatActivity() {
             watchedViewModel.checkIfWatched(movieId)
         }
 
-
         // Alterna guardar o eliminar dels favorits
         fabFavorite.setOnClickListener {
             apiMovie?.let { movie ->
                 if (favoriteViewModel.isFavorite.value == true) {
                     favoriteViewModel.removeFavorite(movie.id)
-                    Toast.makeText(this, "Eliminada de favorites", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show()
                 } else {
                     favoriteViewModel.addFavorite(movie.toSavedMovie())
-                    Toast.makeText(this, "Afegida a favorits", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -99,13 +103,24 @@ class MovieDetailActivity : AppCompatActivity() {
             apiMovie?.let { movie ->
                 if (watchedViewModel.isWatched.value == true) {
                     watchedViewModel.removeWatched(movie.id)
-                    Toast.makeText(this, "Eliminada de vistes", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.removed_from_watched), Toast.LENGTH_SHORT).show()
                 } else {
                     watchedViewModel.addWatched(movie.toWatchedMovie())
-                    Toast.makeText(this, "Marcada com a vista", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.marked_as_watched), Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_user, menu)
+        setupUserMenu(menu)
+        return true
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressedDispatcher.onBackPressed()
+        return true
     }
 
     /**

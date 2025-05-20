@@ -30,4 +30,9 @@
     <string name="watched_movies">Pel·lícules vistes</string>
     <string name="watched_at">Vista el: %s</string>
     <string name="login_not_completed">No s\'ha iniciat sessió"</string>
+    <string name="movie_detail">Detalls de la pel·lícula</string>
+    <string name="removed_from_favorites">Afegida a favorites</string>
+    <string name="added_to_favorites">Eliminada de favorites</string>
+    <string name="removed_from_watched">Afegida a vistes</string>
+    <string name="marked_as_watched">Eliminada com a vista</string>
 </resources>
