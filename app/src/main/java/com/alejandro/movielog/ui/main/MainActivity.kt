@@ -10,6 +10,12 @@ import com.alejandro.movielog.utils.navigateTo
 import dagger.hilt.android.AndroidEntryPoint
 import android.view.Menu
 
+/**
+ * Activitat principal que mostra el catàleg de pel·lícules populars.
+ * Carrega el fragment MovieListFragment on es mostren les pel·lícules.
+ * Només ací s'activa la cerca (SearchView) en la Toolbar
+ */
+// @AndroidEntryPoint indica a Hilt que esta classe necessita rebre dependències injectades automàticament
 @AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
@@ -18,8 +24,10 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        // Toolbar amb títol i sense botó "enrere"
         setupToolbar(toolbar, getString(R.string.popular_movies), showBack = false)
 
+        // Carrega el fragment amb la llista de pel·lícules populars
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_movie_list, MovieListFragment())
@@ -27,10 +35,14 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    /**
+     * "Unfla" el menú principal i configura la SearchView
+     * Quan es busca, obri SearchActivity amb la consulta.
+     */
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
-        // Configura la SearchView només a MainActivity
+        // SearchView només a MainActivity
         val searchItem = menu.findItem(R.id.action_search)
         val searchView = searchItem.actionView as androidx.appcompat.widget.SearchView
         searchView.queryHint = getString(R.string.search_movies)
@@ -38,6 +50,7 @@ class MainActivity : BaseActivity() {
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (!query.isNullOrBlank()) {
+                    // Navega a SearchActivity passant la consulta de cerca
                     navigateTo<SearchActivity>(Constants.Extras.EXTRA_QUERY to query)
                     searchView.clearFocus()
                 }
@@ -46,7 +59,7 @@ class MainActivity : BaseActivity() {
             override fun onQueryTextChange(newText: String?) = false
         })
 
-        // Crida la funció de baseActivity per a configurar el menú d'usuari
+        // Afig el menú d'usuari (icona, foto, accions)
         setupUserMenu(menu)
 
         return true

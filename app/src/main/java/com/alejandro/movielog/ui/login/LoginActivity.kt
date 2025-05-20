@@ -12,13 +12,14 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 
 /**
- * Activitat per a iniciar sessió amb Google. Si l'usuari ja ha iniciat sessió, redirigeix a MainActivity.
+ * Activitat per a iniciar sessió amb Google.
+ * Quan l'usuari fa login, s'autentica amb Firebase i després accedeix a la pantalla principal.
  */
 @Suppress("DEPRECATION")
 class LoginActivity : AppCompatActivity() {
 
     companion object {
-        private const val RC_SIGN_IN = 9001
+        private const val RC_SIGN_IN = 9001 // Codi per identificar la resposta del login de Google
     }
 
     private lateinit var googleSignInClient: com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -26,7 +27,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Si l'usuari ja està iniciat, anem a la pantalla principal
+        // Si l'usuari ja està loguejat, redirigeix a la pantalla principal i tanca el login
         if (UserAuthHelper.isUserLoggedIn) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
@@ -35,20 +36,26 @@ class LoginActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_login)
 
-        // configura el client de Google
+        // Configura el client de Google Sign-In (crea l'objecte amb la configuració)
         googleSignInClient = UserAuthHelper.getGoogleClient(this)
 
+        // Assigna el listener al botó de login
         findViewById<SignInButton>(R.id.sign_in_button).setOnClickListener {
             signIn()
         }
     }
 
-    // inicia el procés de login amb Google.
+    // Inicia el procés d'autenticació amb Google
     private fun signIn() {
         val signInIntent = googleSignInClient.signInIntent
         startActivityForResult(signInIntent, RC_SIGN_IN)
     }
 
+    /**
+     * Rep el resultat de l'activitat de login de Google.
+     * Si l'autenticació té èxit, es guarda l'usuari en Firebase i es passa a la pantalla principal.
+     * Si falla, mostra un Toast d'error.
+     */
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -57,6 +64,7 @@ class LoginActivity : AppCompatActivity() {
             try {
                 val account = task.getResult(ApiException::class.java)!!
                 val idToken = account.idToken ?: throw Exception("No s'ha obtingut el token")
+                // Autentica amb Firebase
                 UserAuthHelper.authenticate(idToken) { success, exception ->
                     if (success) {
                         startActivity(Intent(this, MainActivity::class.java))
