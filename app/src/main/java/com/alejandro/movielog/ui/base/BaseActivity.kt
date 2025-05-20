@@ -12,14 +12,28 @@ import com.alejandro.movielog.utils.auth.UserAuthHelper
 import com.alejandro.movielog.utils.loadCircularImage
 
 open class BaseActivity : AppCompatActivity() {
-
-    // Opcional: per personalitzar títol i si volem el botó de tornar
     fun setupToolbar(toolbar: Toolbar, title: String? = null, showBack: Boolean = false) {
         setSupportActionBar(toolbar)
         title?.let { supportActionBar?.title = it }
         supportActionBar?.setDisplayHomeAsUpEnabled(showBack)
     }
 
+    protected fun setupUserMenu(menu: Menu) {
+        val userItem = menu.findItem(R.id.action_user)
+        val actionView = userItem?.actionView
+        val userImage = actionView?.findViewById<ImageView>(R.id.image_user_menu)
+        val account = UserAuthHelper.getGoogleAccount(this)
+        account?.let {
+            userImage?.loadCircularImage(it.photoUrl.toString())
+        }
+        userImage?.setOnClickListener {
+            val dialog = UserProfileDialog(account) {
+                UserAuthHelper.logout(this)
+                finish()
+            }
+            dialog.show(supportFragmentManager, "user_profile")
+        }
+    }
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
 
@@ -71,4 +85,6 @@ open class BaseActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
 }
