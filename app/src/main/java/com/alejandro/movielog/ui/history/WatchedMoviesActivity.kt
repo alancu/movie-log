@@ -16,6 +16,11 @@ import com.alejandro.movielog.utils.toApiMovie
 import com.alejandro.movielog.viewmodel.WatchedViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
+/**
+ * Activitat que mostra la llista de pel·lícules vistes per l’usuari (historial)
+ * Utilitza un RecyclerView amb WatchedAdapter
+ * La llista es carrega des de Firestore mitjançant el ViewModel.
+ */
 @AndroidEntryPoint
 class WatchedMoviesActivity : BaseActivity() {
 
@@ -28,16 +33,16 @@ class WatchedMoviesActivity : BaseActivity() {
         binding = ActivityWatchedMoviesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Configura la toolbar amb títol i botó "enrere"
+        // Configura la Toolbar amb títol i botó "enrere"
         setupToolbar(binding.toolbar, getString(R.string.watched_movies), showBack = true)
 
+        // Inicialitza l’adaptador per a les pel·lícules vistes
         adapter = WatchedAdapter { watchedMovie ->
             val apiMovie = watchedMovie.toApiMovie()
             val intent = Intent(this, MovieDetailActivity::class.java)
             intent.putExtra(Constants.Extras.EXTRA_MOVIE, apiMovie)
             startActivity(intent)
         }
-
         binding.rvWatched.layoutManager = LinearLayoutManager(this)
         binding.rvWatched.adapter = adapter
 
