@@ -155,7 +155,6 @@
                         android:background="@color/shimmer_placeholder" />
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
