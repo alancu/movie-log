@@ -1,9 +1,11 @@
 package com.alejandro.movielog.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.SavedMovie
 import com.alejandro.movielog.repository.UserMovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,14 +34,14 @@ class FavoriteViewModel @Inject constructor(
     /**
      * Afig una pel·lícula a favorits (guarda a Firestore).
      */
-    fun addFavorite(movie: SavedMovie) {
+    fun addFavorite(context: Context, movie: SavedMovie) {
         viewModelScope.launch {
             try {
                 repository.saveFavorite(movie)
                 _isFavorite.value = true
             } catch (e: Exception) {
                 e.printStackTrace()
-                _errorMessage.value = "Error afegint a favorites: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_adding_favorite) + ": ${e.localizedMessage}"
             }
         }
     }
@@ -47,13 +49,13 @@ class FavoriteViewModel @Inject constructor(
     /**
      * Comprova si una pel·lícula està en favorits.
      */
-    fun checkIfFavorite(movieId: Int) {
+    fun checkIfFavorite(context: Context, movieId: Int) {
         viewModelScope.launch {
             try {
                 _isFavorite.value = repository.isFavorite(movieId)
             } catch (e: Exception) {
                 e.printStackTrace()
-                _errorMessage.value = "Error comprovant si és favorita: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_checking_favorite) + ": ${e.localizedMessage}"
             }
         }
     }
@@ -61,14 +63,14 @@ class FavoriteViewModel @Inject constructor(
     /**
      * Elimina una pel·lícula de favorits.
      */
-    fun removeFavorite(movieId: Int) {
+    fun removeFavorite(context: Context, movieId: Int) {
         viewModelScope.launch {
             try {
                 repository.deleteFavorite(movieId)
                 _isFavorite.value = false
             } catch (e: Exception) {
                 e.printStackTrace()
-                _errorMessage.value = "Error eliminant favorita: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_removing_favorite) + ": ${e.localizedMessage}"
             }
         }
     }
@@ -76,13 +78,13 @@ class FavoriteViewModel @Inject constructor(
     /**
      * Carrega totes les pel·lícules guardades en favorits.
      */
-    fun loadFavorites() {
+    fun loadFavorites(context: Context) {
         viewModelScope.launch {
             try {
                 _favoriteMovies.value = repository.getFavorites()
             } catch (e: Exception) {
                 e.printStackTrace()
-                _errorMessage.value = "Error carregant favorites: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_loading_favorites) + ": ${e.localizedMessage}"
             }
         }
     }

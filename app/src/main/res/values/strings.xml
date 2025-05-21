@@ -35,4 +35,8 @@
     <string name="added_to_favorites">Eliminada de favorites</string>
     <string name="removed_from_watched">Afegida a vistes</string>
     <string name="marked_as_watched">Eliminada com a vista</string>
+    <string name="error_adding_favorite">Error afegint a favorites</string>
+    <string name="error_checking_favorite">Error comprovant si és favorita</string>
+    <string name="error_removing_favorite">Error eliminant favorita</string>
+    <string name="error_loading_favorites">Error carregant favorites</string>
 </resources>

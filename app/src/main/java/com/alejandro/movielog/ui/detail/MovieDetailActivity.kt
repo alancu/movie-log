@@ -81,7 +81,7 @@ class MovieDetailActivity : BaseActivity() {
 
         // Comprova si la pel·lícula està guardada
         apiMovie?.id?.let { movieId ->
-            favoriteViewModel.checkIfFavorite(movieId)
+            favoriteViewModel.checkIfFavorite(this, movieId)
             watchedViewModel.checkIfWatched(movieId)
         }
 
@@ -89,10 +89,10 @@ class MovieDetailActivity : BaseActivity() {
         fabFavorite.setOnClickListener {
             apiMovie?.let { movie ->
                 if (favoriteViewModel.isFavorite.value == true) {
-                    favoriteViewModel.removeFavorite(movie.id)
+                    favoriteViewModel.removeFavorite(this, movie.id)
                     Toast.makeText(this, getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show()
                 } else {
-                    favoriteViewModel.addFavorite(movie.toSavedMovie())
+                    favoriteViewModel.addFavorite(this, movie.toSavedMovie())
                     Toast.makeText(this, getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show()
                 }
             }

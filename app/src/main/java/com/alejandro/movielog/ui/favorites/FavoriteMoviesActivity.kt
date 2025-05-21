@@ -58,7 +58,7 @@ class FavoriteMoviesActivity : BaseActivity() {
         binding.rvFavorites.visibility = View.GONE
 
         // Carrega les pel·lícules favorites de l'usuari
-        favoriteViewModel.loadFavorites()
+        favoriteViewModel.loadFavorites(this)
 
         favoriteViewModel.favoriteMovies.observe(this) { movies ->
             adapter.submitList(movies)
