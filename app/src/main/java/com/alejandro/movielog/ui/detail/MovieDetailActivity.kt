@@ -90,10 +90,10 @@ class MovieDetailActivity : BaseActivity() {
             apiMovie?.let { movie ->
                 if (favoriteViewModel.isFavorite.value == true) {
                     favoriteViewModel.removeFavorite(this, movie.id)
-                    Toast.makeText(this, getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show()
                 } else {
                     favoriteViewModel.addFavorite(this, movie.toSavedMovie())
-                    Toast.makeText(this, getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -101,10 +101,10 @@ class MovieDetailActivity : BaseActivity() {
             apiMovie?.let { movie ->
                 if (watchedViewModel.isWatched.value == true) {
                     watchedViewModel.removeWatched(this, movie.id)
-                    Toast.makeText(this, getString(R.string.removed_from_watched), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.marked_as_watched), Toast.LENGTH_SHORT).show()
                 } else {
                     watchedViewModel.addWatched(this, movie.toWatchedMovie())
-                    Toast.makeText(this, getString(R.string.marked_as_watched), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, getString(R.string.removed_from_watched), Toast.LENGTH_SHORT).show()
                 }
             }
         }
