@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alejandro.movielog.R
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.viewmodel.MovieViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -23,16 +24,20 @@ import dagger.hilt.android.AndroidEntryPoint
 class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
 
     private val viewModel: MovieViewModel by viewModels()
+    private lateinit var shimmerViewContainer: ShimmerFrameLayout
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: MovieAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        shimmerViewContainer = view.findViewById<ShimmerFrameLayout>(R.id.shimmer_view_container)
+
         recyclerView = view.findViewById(R.id.rv_movies)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
         adapter = MovieAdapter()
         recyclerView.adapter = adapter
+
 
         observeViewModel()
         // Carrega pel·lícules populars en iniciar
@@ -46,6 +51,25 @@ class MovieListFragment : Fragment(R.layout.fragment_movie_list) {
     private fun observeViewModel() {
         viewModel.movies.observe(viewLifecycleOwner) { movies ->
             adapter.updateMovies(movies)
+            // Quan s'hagen carregat les pel·lícules, para el shimmer i mostra el RecyclerView
+            shimmerViewContainer.stopShimmer()
+            shimmerViewContainer.visibility = View.GONE
+            recyclerView.visibility = View.VISIBLE
+        }
+
+        // Observem el LiveData "loading" del ViewModel per saber si s'està carregant o no
+        viewModel.loading.observe(viewLifecycleOwner) { isLoading ->
+            if (isLoading) {
+                // Si s'està carregant: mostra el shimmer i amaga la llista real
+                shimmerViewContainer.visibility = View.VISIBLE
+                recyclerView.visibility = View.GONE
+                shimmerViewContainer.startShimmer() // Inicia l'animació del shimmer
+            } else {
+                // Si ja s'ha carregat: para el shimmer i mostra la llista real de pel·lícules
+                shimmerViewContainer.stopShimmer() // Para l'animació del shimmer
+                shimmerViewContainer.visibility = View.GONE
+                recyclerView.visibility = View.VISIBLE
+            }
         }
 
         viewModel.errorMessage.observe(viewLifecycleOwner) { message ->

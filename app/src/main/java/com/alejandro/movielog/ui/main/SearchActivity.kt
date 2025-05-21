@@ -2,6 +2,7 @@ package com.alejandro.movielog.ui.main
 
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +12,7 @@ import com.alejandro.movielog.ui.base.BaseActivity
 import com.alejandro.movielog.ui.components.MovieAdapter
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.viewmodel.MovieViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -23,11 +25,14 @@ class SearchActivity : BaseActivity() {
     private lateinit var binding: ActivitySearchBinding
     private val viewModel: MovieViewModel by viewModels()
     private lateinit var adapter: MovieAdapter
+    private lateinit var shimmerViewContainer: ShimmerFrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        shimmerViewContainer = findViewById(R.id.shimmer_view_container)
 
         // Configura la toolbar amb títol i botó d'anar enrere
         setupToolbar(binding.toolbar, getString(R.string.search_results), showBack = true)
@@ -44,9 +49,19 @@ class SearchActivity : BaseActivity() {
         binding.rvSearchResults.layoutManager = LinearLayoutManager(this)
         binding.rvSearchResults.adapter = adapter
 
+        // Mostra shimmer en iniciar càrrega
+        shimmerViewContainer.visibility = View.VISIBLE
+        shimmerViewContainer.startShimmer()
+        binding.rvSearchResults.visibility = View.GONE
+
+
         // Observa els resultats de la cerca i els mostra
         viewModel.movies.observe(this) { movies ->
             adapter.updateMovies(movies)
+            // Quan tens dades, amaga shimmer i mostra la llista
+            shimmerViewContainer.stopShimmer()
+            shimmerViewContainer.visibility = View.GONE
+            binding.rvSearchResults.visibility = View.VISIBLE
         }
 
         // Mostra un missatge d'error si la cerca falla

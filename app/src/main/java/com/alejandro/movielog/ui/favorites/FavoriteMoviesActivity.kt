@@ -3,6 +3,7 @@ package com.alejandro.movielog.ui.favorites
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,7 @@ import com.alejandro.movielog.ui.detail.MovieDetailActivity
 import com.alejandro.movielog.utils.Constants
 import com.alejandro.movielog.utils.toApiMovie
 import com.alejandro.movielog.viewmodel.FavoriteViewModel
+import com.facebook.shimmer.ShimmerFrameLayout
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
@@ -27,11 +29,14 @@ class FavoriteMoviesActivity : BaseActivity() {
     private lateinit var binding: ActivityFavoriteMoviesBinding
     private val favoriteViewModel: FavoriteViewModel by viewModels()
     private lateinit var adapter: FavoriteAdapter
+    private lateinit var shimmerViewContainer: ShimmerFrameLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFavoriteMoviesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        shimmerViewContainer = findViewById(R.id.shimmer_view_container)
 
         // Configura la Toolbar amb títol i botó d'anar enrere
         setupToolbar(binding.toolbar, getString(R.string.favorite_movies), showBack = true)
@@ -47,11 +52,20 @@ class FavoriteMoviesActivity : BaseActivity() {
         binding.rvFavorites.layoutManager = LinearLayoutManager(this)
         binding.rvFavorites.adapter = adapter
 
+        // Mostra shimmer en iniciar càrrega
+        shimmerViewContainer.visibility = View.VISIBLE
+        shimmerViewContainer.startShimmer()
+        binding.rvFavorites.visibility = View.GONE
+
         // Carrega les pel·lícules favorites de l'usuari
         favoriteViewModel.loadFavorites()
 
         favoriteViewModel.favoriteMovies.observe(this) { movies ->
             adapter.submitList(movies)
+            // Quan tens dades, amaga shimmer i mostra la llista
+            shimmerViewContainer.stopShimmer()
+            shimmerViewContainer.visibility = View.GONE
+            binding.rvFavorites.visibility = View.VISIBLE
         }
 
         favoriteViewModel.errorMessage.observe(this) { msg ->
