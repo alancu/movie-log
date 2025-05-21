@@ -60,7 +60,6 @@ dependencies {
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.firebase.firestore.ktx)
 
-
     // Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
@@ -77,4 +76,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Shimmer
+    implementation(libs.shimmer)
 }
