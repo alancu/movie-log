@@ -1,9 +1,11 @@
 package com.alejandro.movielog.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alejandro.movielog.R
 import com.alejandro.movielog.data.model.WatchedMovie
 import com.alejandro.movielog.repository.UserMovieRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -32,13 +34,13 @@ class WatchedViewModel @Inject constructor(
     /**
      * Marca una pel·lícula com a vista (guarda a Firestore).
      */
-    fun addWatched(movie: WatchedMovie) {
+    fun addWatched(context: Context, movie: WatchedMovie) {
         viewModelScope.launch {
             try {
                 repository.addWatched(movie)
                 _isWatched.value = true
             } catch (e: Exception) {
-                _errorMessage.value = "Error marcant com a vista: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_marking_watched) + ": ${e.localizedMessage}"
             }
         }
     }
@@ -46,13 +48,13 @@ class WatchedViewModel @Inject constructor(
     /**
      * Elimina una pel·lícula de l'historial de vistes.
      */
-    fun removeWatched(movieId: Int) {
+    fun removeWatched(context: Context, movieId: Int) {
         viewModelScope.launch {
             try {
                 repository.removeWatched(movieId)
                 _isWatched.value = false
             } catch (e: Exception) {
-                _errorMessage.value = "Error eliminant de vistes: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_removing_watched) + ": ${e.localizedMessage}"
             }
         }
     }
@@ -60,12 +62,12 @@ class WatchedViewModel @Inject constructor(
     /**
      * Comprova si una pel·lícula està marcada com a vista.
      */
-    fun checkIfWatched(movieId: Int) {
+    fun checkIfWatched(context: Context, movieId: Int) {
         viewModelScope.launch {
             try {
                 _isWatched.value = repository.isWatched(movieId)
             } catch (e: Exception) {
-                _errorMessage.value = "Error comprovant si és vista: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_checking_watched) + ": ${e.localizedMessage}"
             }
         }
     }
@@ -73,13 +75,13 @@ class WatchedViewModel @Inject constructor(
     /**
      * Carrega les pel·lícules vistes.
      */
-    fun loadWatched() {
+    fun loadWatched(context: Context) {
         viewModelScope.launch {
             try {
                 val watched = repository.getWatched()
                 _watchedMovies.value = watched
             } catch (e: Exception) {
-                _errorMessage.value = "Error carregant historial: ${e.localizedMessage}"
+                _errorMessage.value = context.getString(R.string.error_loading_history) + ": ${e.localizedMessage}"
             }
         }
     }

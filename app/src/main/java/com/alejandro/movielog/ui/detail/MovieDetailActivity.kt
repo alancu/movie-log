@@ -82,7 +82,7 @@ class MovieDetailActivity : BaseActivity() {
         // Comprova si la pel·lícula està guardada
         apiMovie?.id?.let { movieId ->
             favoriteViewModel.checkIfFavorite(this, movieId)
-            watchedViewModel.checkIfWatched(movieId)
+            watchedViewModel.checkIfWatched(this, movieId)
         }
 
         // Accions dels botons flotants
@@ -100,10 +100,10 @@ class MovieDetailActivity : BaseActivity() {
         fabWatched.setOnClickListener {
             apiMovie?.let { movie ->
                 if (watchedViewModel.isWatched.value == true) {
-                    watchedViewModel.removeWatched(movie.id)
+                    watchedViewModel.removeWatched(this, movie.id)
                     Toast.makeText(this, getString(R.string.removed_from_watched), Toast.LENGTH_SHORT).show()
                 } else {
-                    watchedViewModel.addWatched(movie.toWatchedMovie())
+                    watchedViewModel.addWatched(this, movie.toWatchedMovie())
                     Toast.makeText(this, getString(R.string.marked_as_watched), Toast.LENGTH_SHORT).show()
                 }
             }

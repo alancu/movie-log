@@ -39,4 +39,8 @@
     <string name="error_checking_favorite">Error comprovant si és favorita</string>
     <string name="error_removing_favorite">Error eliminant favorita</string>
     <string name="error_loading_favorites">Error carregant favorites</string>
+    <string name="error_marking_watched">Error marcant com a vista</string>
+    <string name="error_removing_watched">Error eliminant de vistes</string>
+    <string name="error_checking_watched">Error comprovant si és vista</string>
+    <string name="error_loading_history">Error carregant historial</string>
 </resources>

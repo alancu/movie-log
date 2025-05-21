@@ -56,7 +56,7 @@ class WatchedMoviesActivity : BaseActivity() {
         shimmerViewContainer.startShimmer()
         binding.rvWatched.visibility = View.GONE
 
-        watchedViewModel.loadWatched()
+        watchedViewModel.loadWatched(this)
 
         watchedViewModel.watchedMovies.observe(this) { movies ->
             adapter.submitList(movies)
