@@ -43,4 +43,6 @@
     <string name="error_removing_watched">Error eliminant de vistes</string>
     <string name="error_checking_watched">Error comprovant si és vista</string>
     <string name="error_loading_history">Error carregant historial</string>
+    <string name="error_loading_popular_movies">Error carregant pel·lícules populars</string>
+    <string name="error_searching_movies">Error buscant pel·lícules</string>
 </resources>
