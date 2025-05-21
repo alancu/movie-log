@@ -85,4 +85,10 @@ class FavoriteMoviesActivity : BaseActivity() {
         onBackPressedDispatcher.onBackPressed()
         return true
     }
+
+    override fun onResume() {
+        super.onResume()
+        // tornem a carregar el llistat quan tornem d'una fitxa
+        favoriteViewModel.loadFavorites(this)
+    }
 }

@@ -83,4 +83,10 @@ class WatchedMoviesActivity : BaseActivity() {
         onBackPressedDispatcher.onBackPressed()
         return true
     }
+
+    override fun onResume() {
+        super.onResume()
+        // tornem a carregar el llistat quan tornem d'una fitxa
+        watchedViewModel.loadWatched(this)
+    }
 }
