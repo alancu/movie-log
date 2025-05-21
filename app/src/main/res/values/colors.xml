@@ -1,6 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="colorPrimary">#464C59</color>
+    <color name="colorPrimaryDark">#303542</color>
+    <color name="colorAccent">#F5A94E</color>
+    <color name="colorBackground">#E8E9ED</color>
+    <color name="colorSurface">#F9D9A2</color>
+    <color name="colorDetail">#A26D43</color>
+    <color name="colorOnPrimary">#FFFFFF</color>
+    <color name="colorOnBackground">#222B38</color>
+    <color name="colorOnSurface">#222B38</color>
+    <color name="shimmer_placeholder">#E0E0E0</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="shimmer_placeholder">#E0E0E0</color>
 </resources>
